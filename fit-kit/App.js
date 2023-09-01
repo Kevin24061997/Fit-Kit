@@ -126,6 +126,10 @@ const Page = ({ navigation }) => {
     navigation.navigate('InfoBlock');
   }
 
+  function navigateToInfoEinstellungScreen() {
+    navigation.navigate('Einstellung');
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -168,7 +172,9 @@ const Page = ({ navigation }) => {
       </ScrollView>
 
       <View style={styles.sectionContainer}>
+      <TouchableOpacity onPress={navigateToInfoEinstellungScreen}>
         <Text style={styles.sectionText}>Einstellung</Text>
+        </TouchableOpacity>
         <Text style={styles.sectionText}>Training</Text>
       </View>
     </View>
