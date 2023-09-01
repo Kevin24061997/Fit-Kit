@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
-
+import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginRight: 10,
     marginLeft: 10,
-    marginTop: 40,
+    marginTop: 0,
   },
   dayContainer: {
     alignItems: 'center',
@@ -71,7 +72,31 @@ const styles = StyleSheet.create({
   },
 });
 
-const Page = () => {
+const Stack = createNativeStackNavigator();
+
+function InfoBlockScreen() {
+  return (
+    <View>
+      <Text>InfoBlock 1</Text>
+      {/* Weitere Inhalte für InfoBlock 1 */}
+    </View>
+  );
+}
+
+function EinstellungScreen() {
+  return (
+    <View>
+      <Text>Einstellung</Text>
+      {/* Weitere Inhalte für den Einstellung-Bildschirm */}
+    </View>
+  );
+}
+
+const Page = ({ navigation }) => {
+  function navigateToInfoBlockScreen() {
+    navigation.navigate('InfoBlock');
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -84,6 +109,7 @@ const Page = () => {
       </View>
 
       <ScrollView style={styles.infoBlockContainer}>
+        <TouchableOpacity onPress={navigateToInfoBlockScreen}>
         <View style={styles.infoBlock}>
           <Text style={styles.infoText}>Info 1</Text>
         </View>
@@ -93,6 +119,10 @@ const Page = () => {
         <View style={styles.infoBlock}>
           <Text style={styles.infoText}>Info 3</Text>
         </View>
+        </TouchableOpacity>
+
+        {/* Weitere Info-Blöcke mit TouchableOpacity */}
+        
       </ScrollView>
 
       <View style={styles.sectionContainer}>
@@ -103,4 +133,16 @@ const Page = () => {
   );
 }
 
-export default Page;
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Page">
+        <Stack.Screen name="Page" component={Page} />
+        <Stack.Screen name="InfoBlock" component={InfoBlockScreen} />
+        <Stack.Screen name="Einstellung" component={EinstellungScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default App;
