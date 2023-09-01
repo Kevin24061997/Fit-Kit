@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -70,6 +70,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row', // Container nebeneinander
     justifyContent: 'space-between', // Container nebeneinander mit Abstand
   },
+  currentDateText: {
+    color: 'red',
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
 });
 
 const Stack = createNativeStackNavigator();
@@ -93,6 +98,30 @@ function EinstellungScreen() {
 }
 
 const Page = ({ navigation }) => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [startOfWeek, setStartOfWeek] = useState(new Date());
+
+  useEffect(() => {
+    // Ermitteln Sie den aktuellen Tag der Woche (0 = Sonntag, 1 = Montag, ...)
+    const currentDayOfWeek = currentDate.getDay();
+
+    // Berechnen Sie das Datum des Beginns der aktuellen Woche (Montag)
+    const daysToMonday = currentDayOfWeek === 0 ? 6 : currentDayOfWeek - 1;
+    const monday = new Date(currentDate);
+    monday.setDate(currentDate.getDate() - daysToMonday);
+
+    // Aktualisieren Sie den Start der Woche und das aktuelle Datum
+    setStartOfWeek(monday);
+  }, []);
+
+  function getDayOfWeek(dayIndex) {
+    // Diese Funktion gibt den Wochentag (Mo, Di, ...) für einen gegebenen Index zurück.
+    const daysOfWeek = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+    return daysOfWeek[dayIndex];
+  }
+
+
+
   function navigateToInfoBlockScreen() {
     navigation.navigate('InfoBlock');
   }
@@ -100,12 +129,25 @@ const Page = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        {['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'].map((dayAbbr, index) => (
-          <View key={index} style={styles.dayContainer}>
-            <Text style={styles.dayText}>{dayAbbr}</Text>
-            <Text style={styles.dateText}>{index + 1}</Text>
-          </View>
-        ))}
+        {Array.from({ length: 7 }).map((_, index) => {
+          // Erstellen Sie ein Array mit 7 Tagen (0 bis 6) und mappen Sie es auf die Anzeige
+          const day = new Date(startOfWeek);
+          day.setDate(startOfWeek.getDate() + index);
+
+          return (
+            <View key={index} style={styles.dayContainer}>
+              <Text style={styles.dayText}>{getDayOfWeek(index)}</Text>
+              <Text
+                style={[
+                  styles.dateText,
+                  day.getDate() === currentDate.getDate() ? styles.currentDateText : null,
+                ]}
+              >
+                {day.getDate()}
+              </Text>
+            </View>
+          );
+        })}
       </View>
 
       <ScrollView style={styles.infoBlockContainer}>
