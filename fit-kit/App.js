@@ -137,8 +137,22 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Page">
-        <Stack.Screen name="Page" component={Page} />
-        <Stack.Screen name="InfoBlock" component={InfoBlockScreen} />
+        <Stack.Screen name="Training" component={Page} options={{
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTitleStyle: {
+            color: 'white', 
+          },
+        }} />
+        <Stack.Screen name="InfoBlock" component={InfoBlockScreen} options={{
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTitleStyle: {
+            color: 'white', 
+          },
+        }} />
         <Stack.Screen name="Einstellung" component={EinstellungScreen} />
       </Stack.Navigator>
     </NavigationContainer>
