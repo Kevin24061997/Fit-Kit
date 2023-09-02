@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, Button, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const styles = StyleSheet.create({
@@ -75,18 +75,79 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
   },
+  timerText: {
+    fontSize: 20,
+    color: 'white',
+  },
+  buttonContainer: {
+    marginTop: 20,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+  },
 });
 
 const Stack = createNativeStackNavigator();
 
-function InfoBlockScreen() {
+// Timer ##################################################################
+
+function TimerHeader() {
+  const navigation = useNavigation();
+  const [seconds, setSeconds] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    let timer;
+
+    if (isRunning) {
+      timer = setInterval(() => {
+        setSeconds((prevSeconds) => prevSeconds + 1);
+      }, 1000);
+    } else {
+      clearInterval(timer);
+    }
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [isRunning]);
+
+  const startStopTimer = useCallback(() => {
+    setIsRunning((prevIsRunning) => !prevIsRunning);
+  }, []);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          title={isRunning ? 'Stop' : 'Starten'}
+          onPress={startStopTimer}
+        />
+      ),
+      headerTitle: () => (
+        <View style={styles.headerContainer}>
+          <Text style={{ fontSize: 20, color: 'white' }}>{seconds} seconds</Text>
+        </View>
+      ),
+    });
+  }, [navigation, startStopTimer, isRunning, seconds]);
+
   return (
-    <View>
-      <Text>InfoBlock 1</Text>
-      {/* Weitere Inhalte für InfoBlock 1 */}
+    <View style={styles.container}>
+      <Text style={styles.headerTitle}>Timer Screen</Text>
     </View>
   );
 }
+
+// Timer #######################################################################
 
 function EinstellungScreen() {
   return (
@@ -96,6 +157,8 @@ function EinstellungScreen() {
     </View>
   );
 }
+
+// Page ######################################################################
 
 const Page = ({ navigation }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -123,7 +186,7 @@ const Page = ({ navigation }) => {
 
 
   function navigateToInfoBlockScreen() {
-    navigation.navigate('InfoBlock');
+    navigation.navigate('Timer');
   }
 
   function navigateToInfoEinstellungScreen() {
@@ -181,6 +244,8 @@ const Page = ({ navigation }) => {
   );
 }
 
+// Page #################################################################
+
 function App() {
   return (
     <NavigationContainer>
@@ -193,7 +258,8 @@ function App() {
             color: 'white', 
           },
         }} />
-        <Stack.Screen name="InfoBlock" component={InfoBlockScreen} options={{
+        <Stack.Screen name="Timer" component={TimerHeader} 
+        options={{
           headerStyle: {
             backgroundColor: 'black',
           },
