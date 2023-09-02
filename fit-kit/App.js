@@ -93,6 +93,28 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
+  // #####################################
+
+  ÜbungsBlockContainer: {
+    flex: 1, // Fülle den verfügbaren Raum aus
+    backgroundColor: 'black', // Grauer Hintergrund für den Container
+    maxHeight: 800,
+    padding: 20, // Innenabstand des Containers
+    
+  },
+  ÜbungsBlock: {
+    flexDirection: 'row',
+    backgroundColor: 'darkblue', // Schwarzer Hintergrund für die Info-Blöcke
+    height: 150,
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 20,
+  },
+  infoText: {
+    color: 'white',
+    flex: 1,
+    marginRight: 10,
+  },
 });
 
 const Stack = createNativeStackNavigator();
@@ -103,6 +125,10 @@ function TimerHeader() {
   const navigation = useNavigation();
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+
+  function navigateToEinzelÜbung() {
+    navigation.navigate('EinzelÜbung');
+  }
 
   useEffect(() => {
     let timer;
@@ -141,9 +167,34 @@ function TimerHeader() {
   }, [navigation, startStopTimer, isRunning, seconds]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.headerTitle}>Timer Screen</Text>
-    </View>
+    <ScrollView style={styles.ÜbungsBlockContainer}>
+        <TouchableOpacity onPress={navigateToEinzelÜbung}>
+        <View style={styles.ÜbungsBlock}>
+          <Text style={styles.infoText}>Übung 1</Text>
+        </View>
+        <View style={styles.ÜbungsBlock}>
+          <Text style={styles.infoText}>Übung 2</Text>
+        </View>
+        <View style={styles.ÜbungsBlock}>
+          <Text style={styles.infoText}>Übung 3</Text>
+        </View>
+        <View style={styles.ÜbungsBlock}>
+          <Text style={styles.infoText}>Übung 4</Text>
+        </View>
+        <View style={styles.ÜbungsBlock}>
+          <Text style={styles.infoText}>Übung 5</Text>
+        </View>
+        <View style={styles.ÜbungsBlock}>
+          <Text style={styles.infoText}>Übung 6</Text>
+        </View>
+        <View style={styles.ÜbungsBlock}>
+          <Text style={styles.infoText}>Übung 7</Text>
+        </View>
+        </TouchableOpacity>
+
+        {/* Weitere Info-Blöcke mit TouchableOpacity */}
+        
+      </ScrollView>
   );
 }
 
@@ -153,6 +204,15 @@ function EinstellungScreen() {
   return (
     <View>
       <Text>Einstellung</Text>
+      {/* Weitere Inhalte für den Einstellung-Bildschirm */}
+    </View>
+  );
+}
+
+function EinzelÜbungScreen() {
+  return (
+    <View>
+      <Text>Übung</Text>
       {/* Weitere Inhalte für den Einstellung-Bildschirm */}
     </View>
   );
@@ -267,6 +327,7 @@ function App() {
             color: 'white', 
           },
         }} />
+        <Stack.Screen name="EinzelÜbung" component={EinzelÜbungScreen} />
         <Stack.Screen name="Einstellung" component={EinstellungScreen} />
       </Stack.Navigator>
     </NavigationContainer>
