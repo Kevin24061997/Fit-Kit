@@ -115,6 +115,15 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 10,
   },
+  buttonContainer1: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+  },
+  buttonText1: {
+    fontSize: 16,
+    color: 'white',
+  },
 });
 
 const Stack = createNativeStackNavigator();
@@ -125,10 +134,25 @@ function TimerHeader() {
   const navigation = useNavigation();
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [übungsBlöcke, setÜbungsBlöcke] = useState(['Übung 1', 'Übung 2', 'Übung 3', 'Übung 4', 'Übung 5', 'Übung 6', 'Übung 7']);
 
   function navigateToEinzelÜbung() {
     navigation.navigate('EinzelÜbung');
   }
+
+  const addÜbungsBlock = () => {
+    // Hier füge einen neuen Übungsblock hinzu, z.B. "Übung X"
+    const newÜbungsBlöcke = [...übungsBlöcke, `Übung ${übungsBlöcke.length + 1}`];
+    setÜbungsBlöcke(newÜbungsBlöcke);
+  };
+
+  const removeÜbungsBlock = () => {
+    // Hier entferne den letzten Übungsblock
+    if (übungsBlöcke.length > 0) {
+      const newÜbungsBlöcke = übungsBlöcke.slice(0, übungsBlöcke.length - 1);
+      setÜbungsBlöcke(newÜbungsBlöcke);
+    }
+  };
 
   useEffect(() => {
     let timer;
@@ -168,35 +192,23 @@ function TimerHeader() {
 
   return (
     <ScrollView style={styles.ÜbungsBlockContainer}>
-        <TouchableOpacity onPress={navigateToEinzelÜbung}>
-        <View style={styles.ÜbungsBlock}>
-          <Text style={styles.infoText}>Übung 1</Text>
-        </View>
-        <View style={styles.ÜbungsBlock}>
-          <Text style={styles.infoText}>Übung 2</Text>
-        </View>
-        <View style={styles.ÜbungsBlock}>
-          <Text style={styles.infoText}>Übung 3</Text>
-        </View>
-        <View style={styles.ÜbungsBlock}>
-          <Text style={styles.infoText}>Übung 4</Text>
-        </View>
-        <View style={styles.ÜbungsBlock}>
-          <Text style={styles.infoText}>Übung 5</Text>
-        </View>
-        <View style={styles.ÜbungsBlock}>
-          <Text style={styles.infoText}>Übung 6</Text>
-        </View>
-        <View style={styles.ÜbungsBlock}>
-          <Text style={styles.infoText}>Übung 7</Text>
-        </View>
-        </TouchableOpacity>
-
-        {/* Weitere Info-Blöcke mit TouchableOpacity */}
-        
-      </ScrollView>
+      <View style={styles.buttonContainer1}>
+        <Text style={styles.buttonText1} onPress={addÜbungsBlock}>Hinzufügen</Text>
+        <Text style={styles.buttonText1} onPress={removeÜbungsBlock}>Entfernen</Text>
+      </View>
+      <TouchableOpacity onPress={navigateToEinzelÜbung}>
+        {übungsBlöcke.map((übungsBlock, index) => (
+          <TouchableOpacity key={index} onPress={addÜbungsBlock}>
+            <View style={styles.ÜbungsBlock}>
+              <Text style={styles.infoText}>{übungsBlock}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
+
 
 // Timer #######################################################################
 
