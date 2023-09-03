@@ -1,7 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, Button, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { View, Text, Button, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+// TimerContext erstellen
+const TimerContext = React.createContext();
 
 const styles = StyleSheet.create({
   container: {
@@ -134,7 +137,7 @@ function TimerHeader() {
   const navigation = useNavigation();
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [übungsBlöcke, setÜbungsBlöcke] = useState(['Übung 1', 'Übung 2', 'Übung 3', 'Übung 4', 'Übung 5', 'Übung 6', 'Übung 7']);
+  const [übungsBlöcke, setÜbungsBlöcke] = useState([]);
 
   function navigateToEinzelÜbung() {
     navigation.navigate('EinzelÜbung');
@@ -142,7 +145,7 @@ function TimerHeader() {
 
   const addÜbungsBlock = () => {
     // Hier füge einen neuen Übungsblock hinzu, z.B. "Übung X"
-    const newÜbungsBlöcke = [...übungsBlöcke, `Übung ${übungsBlöcke.length + 1}`];
+    const newÜbungsBlöcke = [...übungsBlöcke, `Übung`];
     setÜbungsBlöcke(newÜbungsBlöcke);
   };
 
@@ -198,11 +201,9 @@ function TimerHeader() {
       </View>
       <TouchableOpacity onPress={navigateToEinzelÜbung}>
         {übungsBlöcke.map((übungsBlock, index) => (
-          <TouchableOpacity key={index} onPress={addÜbungsBlock}>
-            <View style={styles.ÜbungsBlock}>
-              <Text style={styles.infoText}>{übungsBlock}</Text>
-            </View>
-          </TouchableOpacity>
+        <View style={styles.ÜbungsBlock} key={index}>
+          <Text style={styles.infoText}>{`${index + 1}: ${übungsBlock}`}</Text>
+        </View>
         ))}
       </TouchableOpacity>
     </ScrollView>
