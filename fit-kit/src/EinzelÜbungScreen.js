@@ -69,9 +69,6 @@ export function EinzelÜbungScreen() {
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <Button title={isRunning ? 'Stop' : 'Starten'} onPress={handleTimerButtonPress} />
-      ),
       headerTitle: () => (
         <View style={styles.headerContainer}>
           <Text style={styles.timerText}>{formatTime(seconds)}</Text>
