@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TimerHeader } from './src/TimerHeader';
 import { EinstellungScreen } from './src/EinstellungScreen';
 import { EinzelÜbungScreen } from './src/EinzelÜbungScreen';
 import { Page } from './src/Page';
-
-export const TimerContext = React.createContext();
+import { TimerContext } from './src/TimerContext';
 
 const Stack = createNativeStackNavigator();
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, Button, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
-import { TimerContext } from '../App';
+import { TimerContext } from './TimerContext';
 
 export function EinzelÜbungScreen() {
   const { timer, setTimer } = useContext(TimerContext);
