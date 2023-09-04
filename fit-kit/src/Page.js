@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
 
-// Einzel Übung #########################################################
-// Page ######################################################################
 export const Page = ({ navigation }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [startOfWeek, setStartOfWeek] = useState(new Date());

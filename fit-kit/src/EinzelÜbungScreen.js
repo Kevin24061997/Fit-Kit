@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
 import { TimerContext } from '../App';
 
-// Einzel Übung #########################################################
 export function EinzelÜbungScreen() {
   const { timer, setTimer } = useContext(TimerContext);
   const navigation = useNavigation();
