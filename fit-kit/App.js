@@ -151,8 +151,10 @@ function TimerHeader() {
     let timer;
 
     if (isRunning) {
-      timer = setInterval(() => {
-        setSeconds((prevSeconds) => prevSeconds + 1);
+      setTimeout(() => { // Starten Sie den Timer nach einer Verzögerung von 1 Sekunde
+        timer = setInterval(() => {
+          setSeconds((prevSeconds) => prevSeconds + 1);
+        }, 1000);
       }, 1000);
     } else {
       clearInterval(timer);
