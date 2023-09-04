@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TimerHeader } from './src/TimerHeader';
 import { EinstellungScreen } from './src/EinstellungScreen';
