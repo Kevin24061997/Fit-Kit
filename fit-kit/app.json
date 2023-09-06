@@ -9,7 +9,19 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+    "android": {
+      "permissions": []
+    },
+    "ios": {
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "fetch",
+          "remote-notification"
+        ]
+      }
+    }
+      
     },
     "assetBundlePatterns": [
       "**/*"

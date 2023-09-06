@@ -134,4 +134,30 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white',
   },
+
+  timerControls: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    
+  },
+  controlButton: {
+    color: 'blue',
+    fontSize: 18,
+  },
+  timerDisplay: {
+    color: 'white',
+    fontSize: 24,
+  },
+  timecontainer: {
+    position: 'absolute', // Position absolut setzen
+    top: 10, // Abstand zum oberen Rand
+    right: 10, // Abstand zum rechten Rand
+    backgroundColor: 'black', // Hintergrundfarbe auf schwarz setzen
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+    borderRadius: 10
+  },
+
 });
