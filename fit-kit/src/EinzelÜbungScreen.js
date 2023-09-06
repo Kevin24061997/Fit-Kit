@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, Button, Alert } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
 import { TimerContext } from './TimerContext';
@@ -9,6 +9,7 @@ export function EinzelÜbungScreen() {
   const navigation = useNavigation();
   const [seconds, setSeconds] = useState(timer.seconds || 0);
   const [isRunning, setIsRunning] = useState(timer.isRunning || false);
+
 
   // Funktion, um eine Zahl in das Format "00" zu konvertieren
   const formatNumber = (number) => {
@@ -78,9 +79,31 @@ export function EinzelÜbungScreen() {
   }, [navigation, handleTimerButtonPress, isRunning, seconds]);
 
   return (
-    <View>
-      <Text>Übung</Text>
-      {/* Weitere Inhalte für den Einstellung-Bildschirm */}
+    <View style={styles.infoBlockContainer}>
+      <ScrollView horizontal style={{}}>
+    <Image source={require('../Bilder/1.jpg')} style={{ width: 100, height: 100, marginRight: 10 }} />
+    <Image source={require('../Bilder/2.jpg')} style={{ width: 100, height: 100, marginRight: 10 }} />
+    <Image source={require('../Bilder/3.jpg')} style={{ width: 100, height: 100, marginRight: 10 }} />
+    <Image source={require('../Bilder/4.jpg')} style={{ width: 100, height: 100, marginRight: 10 }} />
+    <Image source={require('../Bilder/5.jpg')} style={{ width: 100, height: 100, marginRight: 10 }} />
+    <Image source={require('../Bilder/6.jpg')} style={{ width: 100, height: 100, marginRight: 10 }} />
+    <Image source={require('../Bilder/7.jpg')} style={{ width: 100, height: 100 }} />
+  </ScrollView>
+        <View style={styles.Wiederholungen}>
+          <Text style={styles.infoText}>Überschrift</Text>
+        </View>
+      <View style={styles.sectionContainer1}>
+        <TouchableOpacity onPress={null}>
+          <Text style={styles.sectionText}>Info</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={null}>
+          <Text style={styles.sectionText}>Gewichte</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={null}>
+          <Text style={styles.sectionText}>Fortschritt</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
+

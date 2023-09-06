@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+  
   container: {
     flex: 1,
     backgroundColor: 'darkblue',
@@ -29,13 +30,21 @@ export const styles = StyleSheet.create({
   infoBlockContainer: {
     flex: 1,
     backgroundColor: 'black',
-    maxHeight: 600,
     padding: 20, // Innenabstand des Containers
   },
+
   infoBlock: {
     flexDirection: 'row',
     backgroundColor: 'darkblue',
     height: 200,
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 20,
+  },
+  Wiederholungen: {
+    flexDirection: 'row',
+    backgroundColor: 'darkblue',
+    height: 400,
     borderRadius: 10,
     padding: 10,
     marginBottom: 20,
@@ -50,7 +59,6 @@ export const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
   },
-
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -64,6 +72,13 @@ export const styles = StyleSheet.create({
     marginTop: 10,
   },
   sectionContainer: {
+    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between', // Container nebeneinander mit Abstand
+  },
+  sectionContainer1: {
+    marginTop: 100,
+    marginBottom: 15,
     flexDirection: 'row',
     justifyContent: 'space-between', // Container nebeneinander mit Abstand
   },
