@@ -2,56 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
-import { TimerContext } from './TimerContext';
 import * as Notifications from 'expo-notifications';
+import { HeaderTimer } from './function/HeaderTimer';
 
 export function EinzelÜbungScreen() {
-  const { timer, setTimer } = useContext(TimerContext);
   const navigation = useNavigation();
-  const [seconds, setSeconds] = useState(timer.seconds || 0);
-  const [isRunning] = useState(timer.isRunning || false);
-
-
-  // Funktion, um eine Zahl in das Format "00" zu konvertieren
-  const formatNumber = (number) => {
-    return number < 10 ? `0${number}` : `${number}`;
-  };
-
-  // Funktion zur Umwandlung der Sekunden in "00:00:00" Format
-  const formatTime = (totalSeconds) => {
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    return `${formatNumber(hours)}:${formatNumber(minutes)}:${formatNumber(seconds)}`;
-  };
-
-  useEffect(() => {
-    let intervalId;
-
-    if (isRunning) {
-      intervalId = setInterval(() => {
-        setSeconds((prevSeconds) => prevSeconds + 1);
-      }, 1000);
-    } else {
-      clearInterval(intervalId);
-    }
-
-    setTimer({ seconds, isRunning });
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [isRunning, seconds, setTimer]);
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerTitle: () => (
-        <View style={styles.headerContainer}>
-          <Text style={styles.timerText}>{formatTime(seconds)}</Text>
-        </View>
-      ),
-    });
-  }, [ isRunning, seconds]);
+  
+  HeaderTimer(navigation, false);
     
   // Timer in Container ##############################
 
