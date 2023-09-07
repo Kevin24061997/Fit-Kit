@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
-import * as Notifications from 'expo-notifications';
+import { schedulePushNotification } from './function/PushUp';
 import { HeaderTimer } from './function/HeaderTimer';
 
 export function EinzelÜbungScreen() {
@@ -16,14 +16,14 @@ export function EinzelÜbungScreen() {
   const [isRunning1, setIsRunning2] = useState(false);
 
   useEffect(() => {
-    if (isRunning1 && time1 > 0) {
+    if (isRunning1) {
       const timerInterval = setInterval(() => {
         if (time1 > 0) {
           setTime1(time1 - 1);
         } else {
-          clearInterval(timerInterval);
-          setIsRunning2(false);
-          sendNotification(); // Timer ist abgelaufen, Benachrichtigung senden
+          schedulePushNotification();
+          setTime1(120);
+          setIsRunning2(false)
         }
       }, 1000);
       return () => clearInterval(timerInterval);
@@ -55,16 +55,6 @@ export function EinzelÜbungScreen() {
     if (!isRunning1) {
       startTimer();
     }
-  };
-
-  const sendNotification = async () => {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: 'Timer abgelaufen',
-        body: 'Das nächste Set machen!',
-      },
-      trigger: null, // Sofortige Auslösung der Benachrichtigung
-    });
   };
 
   return (
