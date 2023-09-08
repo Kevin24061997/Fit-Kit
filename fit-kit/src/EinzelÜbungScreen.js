@@ -60,16 +60,16 @@ export function EinzelÜbungScreen() {
   return (
     <View style={styles.infoBlockContainer}>
       <ScrollView horizontal style={{}}>
-    <Image source={require('../Bilder/1.jpg')} style={{ width: 100, height: 100, marginRight: 10 }} />
-    <Image source={require('../Bilder/2.jpg')} style={{ width: 100, height: 100, marginRight: 10 }} />
-    <Image source={require('../Bilder/3.jpg')} style={{ width: 100, height: 100, marginRight: 10 }} />
-    <Image source={require('../Bilder/4.jpg')} style={{ width: 100, height: 100, marginRight: 10 }} />
-    <Image source={require('../Bilder/5.jpg')} style={{ width: 100, height: 100, marginRight: 10 }} />
-    <Image source={require('../Bilder/6.jpg')} style={{ width: 100, height: 100, marginRight: 10 }} />
-    <Image source={require('../Bilder/7.jpg')} style={{ width: 100, height: 100 }} />
+    <Image source={require('../Bilder/1.jpg')} style={{ width: 100, height: 100, marginRight: 10, borderRadius: 10 }} />
+    <Image source={require('../Bilder/2.jpg')} style={{ width: 100, height: 100, marginRight: 10, borderRadius: 10 }} />
+    <Image source={require('../Bilder/3.jpg')} style={{ width: 100, height: 100, marginRight: 10, borderRadius: 10 }} />
+    <Image source={require('../Bilder/4.jpg')} style={{ width: 100, height: 100, marginRight: 10, borderRadius: 10 }} />
+    <Image source={require('../Bilder/5.jpg')} style={{ width: 100, height: 100, marginRight: 10, borderRadius: 10 }} />
+    <Image source={require('../Bilder/6.jpg')} style={{ width: 100, height: 100, marginRight: 10, borderRadius: 10 }} />
+    <Image source={require('../Bilder/7.jpg')} style={{ width: 100, height: 100, borderRadius: 10 }} />
   </ScrollView>
     <View style={styles.Wiederholungen}>
-        <Image source={require('../Bilder/1.jpg')} style={{ width: 70, height: 70 }} />
+        <Image source={require('../Bilder/1.jpg')} style={{ width: 70, height: 70, borderRadius: 10 }} />
         <View style={styles.timecontainer}>
           <View style={styles.timerControls}>
             <TouchableOpacity onPress={decreaseTime}>
@@ -98,4 +98,3 @@ export function EinzelÜbungScreen() {
     </View>
   );
 }
-

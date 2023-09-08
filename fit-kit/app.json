@@ -10,33 +10,39 @@
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff",
-    "android": {
-      "permissions": []
-    },
-    "ios": {
-      "infoPlist": {
-        "UIBackgroundModes": [
-          "fetch",
-          "remote-notification"
-        ]
+      "android": {
+        "permissions": []
+      },
+      "ios": {
+        "infoPlist": {
+          "UIBackgroundModes": [
+            "fetch",
+            "remote-notification"
+          ]
+        }
       }
-    }
-      
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kevin369.fitkit"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.kevin369.fitkit"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "269deda8-facc-47d9-aca5-e66ed1a2cecf"
+      }
     }
   }
 }
