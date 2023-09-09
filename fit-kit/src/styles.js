@@ -214,7 +214,7 @@ xText: {
 },
 invisible: {
   opacity: 0, // Mach das erste X unsichtbar
-  fontSize: 5,
+  fontSize: 13,
   fontWeight: 'bold',
   color: 'white',
   marginBottom: 10,

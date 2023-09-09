@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity, FlatList, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+// Stile und Funktionen importieren
 import { styles } from './styles';
 import { schedulePushNotification } from './function/PushUp';
 import { HeaderTimer } from './function/HeaderTimer';
@@ -9,11 +11,11 @@ export function EinzelÜbungScreen() {
   const navigation = useNavigation();
   
   HeaderTimer(navigation, false);
-    
+
   // Timer in Container ##############################
 
   const [time1, setTime1] = useState(90); // Zeit in Sekunden (2 Minuten = 90 Sekunden)
-  const [isRunning1, setIsRunning2] = useState(false);
+  const [isRunning1, setIsRunning1] = useState(false);
 
   useEffect(() => {
     if (isRunning1) {
@@ -23,7 +25,7 @@ export function EinzelÜbungScreen() {
         } else {
           schedulePushNotification();
           setTime1(90);
-          setIsRunning2(false)
+          setIsRunning1(false);
         }
       }, 1000);
       return () => clearInterval(timerInterval);
@@ -31,7 +33,7 @@ export function EinzelÜbungScreen() {
   }, [isRunning1, time1]);
 
   const startTimer = () => {
-    setIsRunning2(true);
+    setIsRunning1(true);
   };
 
   const decreaseTime = () => {
@@ -57,29 +59,72 @@ export function EinzelÜbungScreen() {
     }
   };
 
-  // liste und Modal#############################
+  // Bilder ##############################
+  const images = [
+    require('../Bilder/1.jpg'),
+    require('../Bilder/2.jpg'),
+    require('../Bilder/3.jpg'),
+    require('../Bilder/4.jpg'),
+    require('../Bilder/5.jpg'),
+    require('../Bilder/6.jpg'),
+    require('../Bilder/7.jpg'),
+  ];
 
-  const initialData = ['01', '02', '03', '04', '05']; // Zweistellige Zahlen
-  const [list1, setList1] = useState(initialData);
-  const [list2, setList2] = useState(initialData);
-  const [checkboxList1, setCheckboxList1] = useState([false, false, false, false, false]);
-  const [checkboxList2, setCheckboxList2] = useState([false, false, false, false, false]);
+  // Inhalt für jedes Bild
+  const [imageContents, setImageContents] = useState([
+    {
+      heading: 'Bild 1 Überschrift',
+      list1: ['01', '02', '03', '04', '05'],
+      list2: ['01', '02', '03', '04', '05'],
+      checkboxList1: [false, false, false, false, false],
+      checkboxList2: [false, false, false, false, false],
+    },
+    {
+      heading: 'Bild 2 Überschrift',
+      list1: ['06', '07', '08', '09', '10'],
+      list2: ['06', '07', '08', '09', '10'],
+      checkboxList1: [false, false, false, false, false],
+      checkboxList2: [false, false, false, false, false],
+    },
+    {
+      heading: 'Bild 3 Überschrift',
+      list1: ['11', '12', '13', '14', '15'],
+      list2: ['11', '12', '13', '14', '15'],
+      checkboxList1: [false, false, false, false, false],
+      checkboxList2: [false, false, false, false, false],
+    },
+    {
+      heading: 'Bild 4 Überschrift',
+      list1: ['16', '17', '18', '19', '20'],
+      list2: ['16', '17', '18', '19', '20'],
+      checkboxList1: [false, false, false, false, false],
+      checkboxList2: [false, false, false, false, false],
+    },
+    {
+      heading: 'Bild 5 Überschrift',
+      list1: ['21', '22', '23', '24', '25'],
+      list2: ['21', '22', '23', '24', '25'],
+      checkboxList1: [false, false, false, false, false],
+      checkboxList2: [false, false, false, false, false],
+    },
+    {
+      heading: 'Bild 6 Überschrift',
+      list1: ['26', '27', '28', '29', '30'],
+      list2: ['26', '27', '28', '29', '30'],
+      checkboxList1: [false, false, false, false, false],
+      checkboxList2: [false, false, false, false, false],
+    },
+    {
+      heading: 'Bild 7 Überschrift',
+      list1: ['31', '32', '33', '34', '35'],
+      list2: ['31', '32', '33', '34', '35'],
+      checkboxList1: [false, false, false, false, false],
+      checkboxList2: [false, false, false, false, false],
+    },
+  ]);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
-
-  const handleCheck1 = (index) => {
-    const newCheckboxList = [...checkboxList1];
-    newCheckboxList[index] = !newCheckboxList[index];
-    setCheckboxList1(newCheckboxList);
-    setModalVisible(true); // Öffnet das Modal beim Klicken auf die Checkbox
-  };
-
-  const handleCheck2 = (index) => {
-    const newCheckboxList = [...checkboxList2];
-    newCheckboxList[index] = !newCheckboxList[index];
-    setCheckboxList2(newCheckboxList);
-    setModalVisible(true); // Öffnet das Modal beim Klicken auf die Checkbox
-  };
 
   const handleModalClose = () => {
     setModalVisible(false);
@@ -92,66 +137,65 @@ export function EinzelÜbungScreen() {
   };
 
   const handleDelete = () => {
-    // Löscht einen Eintrag aus allen Listen
-    if (list1.length > 0 && list2.length > 0) {
-      const newList1 = [...list1];
-      const newList2 = [...list2];
-      const newCheckboxList1 = [...checkboxList1];
-      const newCheckboxList2 = [...checkboxList2];
+    // Hier den Code zur Verarbeitung des Löschen-Buttons einfügen
+    if (imageContents[selectedImageIndex].list1.length > 0 && imageContents[selectedImageIndex].list2.length > 0) {
+      const newList1 = [...imageContents[selectedImageIndex].list1];
+      const newList2 = [...imageContents[selectedImageIndex].list2];
+      const newCheckboxList1 = [...imageContents[selectedImageIndex].checkboxList1];
+      const newCheckboxList2 = [...imageContents[selectedImageIndex].checkboxList2];
 
       newList1.pop(); // Entfernt den letzten Eintrag aus Liste 1
       newList2.pop(); // Entfernt den letzten Eintrag aus Liste 2
       newCheckboxList1.pop(); // Entfernt den letzten Eintrag aus Checkbox-Liste 1
       newCheckboxList2.pop(); // Entfernt den letzten Eintrag aus Checkbox-Liste 2
 
-      setList1(newList1);
-      setList2(newList2);
-      setCheckboxList1(newCheckboxList1);
-      setCheckboxList2(newCheckboxList2);
+      const updatedImageContents = [...imageContents];
+      updatedImageContents[selectedImageIndex].list1 = newList1;
+      updatedImageContents[selectedImageIndex].list2 = newList2;
+      updatedImageContents[selectedImageIndex].checkboxList1 = newCheckboxList1;
+      updatedImageContents[selectedImageIndex].checkboxList2 = newCheckboxList2;
+
+      setImageContents(updatedImageContents);
     }
   };
 
+  const handleCheck2 = (index) => {
+    // Hier den Code zur Verarbeitung der Checkboxen einfügen
+    const newCheckboxList2 = [...imageContents[selectedImageIndex].checkboxList2];
+    newCheckboxList2[index] = !newCheckboxList2[index];
+
+    const updatedImageContents = [...imageContents];
+    updatedImageContents[selectedImageIndex].checkboxList2 = newCheckboxList2;
+
+    setImageContents(updatedImageContents);
+    setModalVisible(true); // Öffnet das Modal beim Klicken auf die Checkbox
+  };
+
   const handleAdd = () => {
-    if (list1.length < 6) { // Überprüfung, ob die maximale Anzahl von Einträgen erreicht ist
-      // Fügt einen Eintrag in alle Listen hinzu
-      const newItem = (parseInt(list1[list1.length - 1]) + 1).toString(); // Erzeugt eine neue Zahl
-      const newList1 = [...list1, newItem];
-      const newList2 = [...list2, newItem];
-      const newCheckboxList1 = [...checkboxList1, false];
-      const newCheckboxList2 = [...checkboxList2, false];
-  
-      setList1(newList1);
-      setList2(newList2);
-      setCheckboxList1(newCheckboxList1);
-      setCheckboxList2(newCheckboxList2);
+    // Hier den Code zur Verarbeitung des Hinzufügen-Buttons einfügen
+    if (imageContents[selectedImageIndex].list1.length < 6) {
+      // Überprüfung, ob die maximale Anzahl von Einträgen erreicht ist
+      const newItem = (parseInt(imageContents[selectedImageIndex].list1[imageContents[selectedImageIndex].list1.length - 1]) + 1).toString(); // Erzeugt eine neue Zahl
+
+      const newList1 = [...imageContents[selectedImageIndex].list1, newItem];
+      const newList2 = [...imageContents[selectedImageIndex].list2, newItem];
+      const newCheckboxList1 = [...imageContents[selectedImageIndex].checkboxList1, false];
+      const newCheckboxList2 = [...imageContents[selectedImageIndex].checkboxList2, false];
+
+      const updatedImageContents = [...imageContents];
+      updatedImageContents[selectedImageIndex].list1 = newList1;
+      updatedImageContents[selectedImageIndex].list2 = newList2;
+      updatedImageContents[selectedImageIndex].checkboxList1 = newCheckboxList1;
+      updatedImageContents[selectedImageIndex].checkboxList2 = newCheckboxList2;
+
+      setImageContents(updatedImageContents);
     } else {
       // Hier können Sie eine Benachrichtigung anzeigen oder andere Maßnahmen ergreifen,
       // um dem Benutzer mitzuteilen, dass die maximale Anzahl von Einträgen erreicht ist.
     }
   };
 
-   // Bilder ##############################
-   const images = [
-    require('../Bilder/1.jpg'),
-    require('../Bilder/2.jpg'),
-    require('../Bilder/3.jpg'),
-    require('../Bilder/4.jpg'),
-    require('../Bilder/5.jpg'),
-    require('../Bilder/6.jpg'),
-    require('../Bilder/7.jpg'),
-  ];
-
-  const imageHeadings = [
-    'Bild 1 Überschrift',
-    'Bild 2 Überschrift',
-    'Bild 3 Überschrift',
-    'Bild 4 Überschrift',
-    'Bild 5 Überschrift',
-    'Bild 6 Überschrift',
-    'Bild 7 Überschrift',
-  ];
-
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0); // Der Index des ausgewählten Bilds
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const handleImageSelect = (index) => {
     setSelectedImageIndex(index);
@@ -160,81 +204,79 @@ export function EinzelÜbungScreen() {
   return (
     <View style={styles.infoBlockContainer}>
       <ScrollView horizontal style={{ flexDirection: 'row' }}>
-        {/* Hier werden die Bilder in der horizontalen ScrollView angezeigt */}
         {images.map((image, index) => (
           <TouchableOpacity key={index} onPress={() => handleImageSelect(index)}>
             <Image
               source={image}
               style={{ width: 100, height: 100, marginRight: 10, borderRadius: 10 }}
             />
-          
           </TouchableOpacity>
         ))}
       </ScrollView>
 
-    <View style={styles.container1 }>
-    <Image source={images[selectedImageIndex]} style={{ width: 70, height: 70, borderRadius: 10 }} />
-      <Text style={styles.headingStyle}>{imageHeadings[selectedImageIndex]}</Text>
+      <View style={styles.container1 }>
+        <Image source={images[selectedImageIndex]} style={{ width: 70, height: 70, borderRadius: 10 }} />
+        <Text style={styles.headingStyle}>{imageContents[selectedImageIndex].heading}</Text>
         <View style={styles.timecontainer}>
           <View style={styles.timerControls}>
             <TouchableOpacity onPress={decreaseTime}>
               <Text style={styles.controlButton}>-10 </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={handleTimerTextClick}>
-            <Text style={styles.timerDisplay}>{formatTime1()}</Text>
+              <Text style={styles.timerDisplay}>{formatTime1()}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={increaseTime}>
               <Text style={styles.controlButton}> +10</Text>
             </TouchableOpacity>
           </View>
         </View>
-      
-      <View style={styles.content1}>
-        <View style={styles.listContainer1}>
-          <Text style={styles.headerText1}>Wiederholung</Text>
-          <FlatList
-            data={list1}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item, index }) => (
-              <View style={styles.listItem1}>
-                <Text style={styles.indexText1}>{index + 1}</Text>
-                <Text style={styles.itemText1}>{item}</Text>
-              </View>
-            )}
-          />
-        </View>
-        <View style={styles.xContainer}>
-          <FlatList
-            data={Array(list1.length + 1).fill('X')}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item, index }) => (
-              <View style={styles.xListItem}>
-                <Text style={[styles.xText, index === 0 && styles.invisible]}>{item}</Text>
-              </View>
-            )}
-          />
-        </View>
-        <View style={styles.listContainer1}>
-          <Text style={styles.headerText1}>KG pro Seite</Text>
-          <FlatList
-            data={list2}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item, index }) => (
-              <View style={styles.listItem1}>
-                <Text style={styles.itemText1}>{item}</Text>
-                <TouchableOpacity
-                  onPress={() => handleCheck2(index)}
-                  style={[styles.checkbox1, checkboxList2[index] && styles.checkedCheckbox1]}
-                >
-                  {checkboxList2[index] && <Text>X</Text>}
-                </TouchableOpacity>
-              </View>
-            )}
-          />
+
+        <View style={styles.content1}>
+          <View style={styles.listContainer1}>
+            <Text style={styles.headerText1}>Wiederholung</Text>
+            <FlatList
+              data={imageContents[selectedImageIndex].list1}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item, index }) => (
+                <View style={styles.listItem1}>
+                  <Text style={styles.indexText1}>{index + 1}</Text>
+                  <Text style={styles.itemText1}>{item}</Text>
+                </View>
+              )}
+            />
+          </View>
+          <View style={styles.xContainer}>
+            <FlatList
+              data={Array(imageContents[selectedImageIndex].list1.length + 1).fill('X')}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item, index }) => (
+                <View style={styles.xListItem}>
+                  <Text style={[styles.xText, index === 0 && styles.invisible]}>{item}</Text>
+                </View>
+              )}
+            />
+          </View>
+          <View style={styles.listContainer1}>
+            <Text style={styles.headerText1}>KG pro Seite</Text>
+            <FlatList
+              data={imageContents[selectedImageIndex].list2}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item, index }) => (
+                <View style={styles.listItem1}>
+                  <Text style={styles.itemText1}>{item}</Text>
+                  <TouchableOpacity
+                    onPress={() => handleCheck2(index)}
+                    style={[styles.checkbox1, imageContents[selectedImageIndex].checkboxList2[index] && styles.checkedCheckbox1]}
+                  >
+                    {imageContents[selectedImageIndex].checkboxList2[index] && <Text>X</Text>}
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+          </View>
         </View>
       </View>
       
-      </View>
       <Modal
         animationType="slide"
         transparent={true}
@@ -276,6 +318,7 @@ export function EinzelÜbungScreen() {
           </View>
         </View>
       </Modal>
+
       <View style={styles.buttonsContainer1}>
         <TouchableOpacity onPress={handleDelete} style={styles.button1}>
           <Text style={styles.buttonText1}>-</Text>
@@ -284,7 +327,7 @@ export function EinzelÜbungScreen() {
           <Text style={styles.buttonText1}>+</Text>
         </TouchableOpacity>
       </View>
-     
+
       <View style={styles.sectionContainer1}>
         <TouchableOpacity onPress={null}>
           <Text style={styles.sectionText}>Info</Text>
