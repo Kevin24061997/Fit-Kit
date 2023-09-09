@@ -160,4 +160,126 @@ export const styles = StyleSheet.create({
     borderRadius: 10
   },
 
+
+// EinzelÜbungsScreen########################################
+
+container1: {
+  flex: 21,
+  backgroundColor: 'darkblue',
+  height: 400,
+  borderRadius: 10,
+  padding: 10,
+  marginBottom: - 30,
+},
+content1: {
+  flexDirection: 'row',
+  alignItems: 'center',
+},
+listContainer1: {
+  flex: 1,
+},
+listItem1: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  marginTop: 20,
+  paddingHorizontal: 10,
+},
+xContainer: {
+  flexDirection: 'column',
+  alignItems: 'center',
+},
+xListItem: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: 20,
+  paddingHorizontal: 10,
+},
+indexText1: {
+  fontSize: 20,
+  marginRight: 10,
+  color: 'white',
+},
+itemText1: {
+  fontSize: 20,
+  flex: 1,
+  color: 'white',
+  marginLeft: 50,
+},
+xText: {
+  marginTop: 1,
+  fontSize: 20,
+  color: 'white',
+},
+invisible: {
+  opacity: 0, // Mach das erste X unsichtbar
+  fontSize: 5,
+  fontWeight: 'bold',
+  color: 'white',
+  marginBottom: 10,
+},
+checkbox1: {
+  width: 20,
+  height: 20,
+  borderWidth: 1,
+  borderColor: 'black',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'white',
+},
+checkedCheckbox1: {
+  backgroundColor: 'green',
+},
+headerText1: {
+  fontSize: 21,
+  fontWeight: 'bold',
+  color: 'white',
+  marginBottom: 10,
+},
+buttonsContainer1: {
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginTop: 20,
+},
+button1: {
+  backgroundColor: 'darkblue',
+  width: 40,
+  height: 40,
+  borderRadius: 20,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginHorizontal: 10,
+},
+buttonText1: {
+  fontSize: 24,
+  fontWeight: 'bold',
+  color: 'white',
+},
+modalContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
+modalContent: {
+  backgroundColor: 'black',
+  padding: 20,
+  borderRadius: 10,
+  alignItems: 'center',
+},
+modalText: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  marginBottom: 20,
+},
+difficultyButton: {
+  width: 100,
+  height: 40,
+  borderRadius: 20,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginBottom: 10,
+},
 });
