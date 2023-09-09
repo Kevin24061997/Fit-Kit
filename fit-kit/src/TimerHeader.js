@@ -24,14 +24,16 @@ export function TimerHeader() {
   };
 
   const addÜbungsBlock = () => {
-    // Hier füge einen neuen Übungsblock hinzu, z.B. "Übung X"
-    const newÜbungsBlöcke = [...übungsBlöcke, `Übung`];
-    setÜbungsBlöcke(newÜbungsBlöcke);
+    if (übungsBlöcke.length < 9) {
+      // Hier füge einen neuen Übungsblock hinzu, z.B. "Übung X"
+      const newÜbungsBlöcke = [...übungsBlöcke, `Übung ${übungsBlöcke.length + 1}`];
+      setÜbungsBlöcke(newÜbungsBlöcke);
+    }
   };
-
+  
   const removeÜbungsBlock = () => {
-    // Hier entferne den letzten Übungsblock
     if (übungsBlöcke.length > 0) {
+      // Hier entferne den letzten Übungsblock
       const newÜbungsBlöcke = übungsBlöcke.slice(0, übungsBlöcke.length - 1);
       setÜbungsBlöcke(newÜbungsBlöcke);
     }
