@@ -130,19 +130,51 @@ export function EinzelÜbungScreen() {
     }
   };
 
+   // Bilder ##############################
+   const images = [
+    require('../Bilder/1.jpg'),
+    require('../Bilder/2.jpg'),
+    require('../Bilder/3.jpg'),
+    require('../Bilder/4.jpg'),
+    require('../Bilder/5.jpg'),
+    require('../Bilder/6.jpg'),
+    require('../Bilder/7.jpg'),
+  ];
+
+  const imageHeadings = [
+    'Bild 1 Überschrift',
+    'Bild 2 Überschrift',
+    'Bild 3 Überschrift',
+    'Bild 4 Überschrift',
+    'Bild 5 Überschrift',
+    'Bild 6 Überschrift',
+    'Bild 7 Überschrift',
+  ];
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0); // Der Index des ausgewählten Bilds
+
+  const handleImageSelect = (index) => {
+    setSelectedImageIndex(index);
+  };
+
   return (
     <View style={styles.infoBlockContainer}>
-      <ScrollView horizontal style={{}}>
-    <Image source={require('../Bilder/1.jpg')} style={{ width: 100, height: 100, marginRight: 10, borderRadius: 10 }} />
-    <Image source={require('../Bilder/2.jpg')} style={{ width: 100, height: 100, marginRight: 10, borderRadius: 10 }} />
-    <Image source={require('../Bilder/3.jpg')} style={{ width: 100, height: 100, marginRight: 10, borderRadius: 10 }} />
-    <Image source={require('../Bilder/4.jpg')} style={{ width: 100, height: 100, marginRight: 10, borderRadius: 10 }} />
-    <Image source={require('../Bilder/5.jpg')} style={{ width: 100, height: 100, marginRight: 10, borderRadius: 10 }} />
-    <Image source={require('../Bilder/6.jpg')} style={{ width: 100, height: 100, marginRight: 10, borderRadius: 10 }} />
-    <Image source={require('../Bilder/7.jpg')} style={{ width: 100, height: 100, borderRadius: 10 }} />
-  </ScrollView>
+      <ScrollView horizontal style={{ flexDirection: 'row' }}>
+        {/* Hier werden die Bilder in der horizontalen ScrollView angezeigt */}
+        {images.map((image, index) => (
+          <TouchableOpacity key={index} onPress={() => handleImageSelect(index)}>
+            <Image
+              source={image}
+              style={{ width: 100, height: 100, marginRight: 10, borderRadius: 10 }}
+            />
+          
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+
     <View style={styles.container1 }>
-        <Image source={require('../Bilder/1.jpg')} style={{ width: 70, height: 70, borderRadius: 10 }} />
+    <Image source={images[selectedImageIndex]} style={{ width: 70, height: 70, borderRadius: 10 }} />
+      <Text style={styles.headingStyle}>{imageHeadings[selectedImageIndex]}</Text>
         <View style={styles.timecontainer}>
           <View style={styles.timerControls}>
             <TouchableOpacity onPress={decreaseTime}>

@@ -182,7 +182,7 @@ listItem1: {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  marginTop: 20,
+  marginBottom: 20,
   paddingHorizontal: 10,
 },
 xContainer: {
@@ -193,7 +193,7 @@ xListItem: {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  marginTop: 20,
+  marginBottom: 19,
   paddingHorizontal: 10,
 },
 indexText1: {
@@ -236,12 +236,13 @@ headerText1: {
   fontWeight: 'bold',
   color: 'white',
   marginBottom: 10,
+  marginTop: 10,
 },
 buttonsContainer1: {
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
-  marginTop: 20,
+  marginTop: 35,
 },
 button1: {
   backgroundColor: 'darkblue',
@@ -282,4 +283,14 @@ difficultyButton: {
   alignItems: 'center',
   marginBottom: 10,
 },
+
+headingStyle: {
+  textAlign: 'center',
+  fontSize: 20,
+  fontWeight: 'bold',
+  color: 'white',
+  marginBottom: 0,
+  marginTop: - 30,
+  marginLeft: 40,
+}
 });
