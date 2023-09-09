@@ -12,7 +12,7 @@ export function EinzelÜbungScreen() {
     
   // Timer in Container ##############################
 
-  const [time1, setTime1] = useState(120); // Zeit in Sekunden (2 Minuten = 120 Sekunden)
+  const [time1, setTime1] = useState(90); // Zeit in Sekunden (2 Minuten = 90 Sekunden)
   const [isRunning1, setIsRunning2] = useState(false);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export function EinzelÜbungScreen() {
           setTime1(time1 - 1);
         } else {
           schedulePushNotification();
-          setTime1(120);
+          setTime1(90);
           setIsRunning2(false)
         }
       }, 1000);
@@ -88,6 +88,7 @@ export function EinzelÜbungScreen() {
   const handleDifficultySelect = (difficulty) => {
     setSelectedDifficulty(difficulty);
     setModalVisible(false);
+    startTimer();
   };
 
   const handleDelete = () => {
