@@ -122,6 +122,7 @@ export function EinzelÜbungScreen() {
       checkboxList2: [false, false, false, false, false],
     },
   ]);
+  
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
@@ -170,6 +171,34 @@ export function EinzelÜbungScreen() {
     setImageContents(updatedImageContents);
     setModalVisible(true); // Öffnet das Modal beim Klicken auf die Checkbox
   };
+
+  const [infoVisible, setInfoVisible] = useState(false);
+
+  const handleInfoClose = () => {
+    setInfoVisible(false);
+  };
+
+  const InfoTouch = () => {
+    setInfoVisible(true)
+  }
+
+  // const imagePairs = [
+  //   [require('../Bilder/1.jpg'), require('../Bilder/3.jpg')],
+  //   [require('../Bilder/2.jpg'), require('../Bilder/4.jpg')],
+  //   // Füge weitere Bildpaare hinzu
+  // ];
+  // const [imagePairIndex, setImagePairIndex] = useState(0);
+
+  // useEffect(() => {
+  //   const imagePairInterval = setInterval(() => {
+  //     setImagePairIndex((prevIndex) =>
+  //       prevIndex === imagePairs.length - 1 ? 0 : prevIndex + 1
+  //     );
+  //   }, 3000);
+  
+  //   return () => clearInterval(imagePairInterval);
+  // }, [imagePairs]);
+  
 
   const handleAdd = () => {
     // Hier den Code zur Verarbeitung des Hinzufügen-Buttons einfügen
@@ -329,9 +358,29 @@ export function EinzelÜbungScreen() {
       </View>
 
       <View style={styles.sectionContainer1}>
-        <TouchableOpacity onPress={null}>
+        <TouchableOpacity onPress={InfoTouch}>
           <Text style={styles.sectionText}>Info</Text>
         </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={infoVisible}
+          onRequestClose={handleInfoClose}>
+          <View style={[styles.modalContainer]}>
+            <View style={styles.modalContent1}>
+            <ScrollView>
+              <Text style={styles.headingStyle1}>{imageContents[selectedImageIndex].heading}</Text>
+              <Image source={images[selectedImageIndex]} style={{ width: 230, height: 230, borderRadius: 10, marginBottom: 10 }} />
+              <Text style={[styles.modalText, { color: 'white' }]}>
+                so und so musst du das machen und so gehts weiter und weiter und weiter 
+              </Text>
+              <TouchableOpacity onPress={handleInfoClose}>
+                <Text style={{ color: 'white' }}>Schließen</Text>
+              </TouchableOpacity>
+            </ScrollView>
+            </View>
+          </View>
+        </Modal>
         <TouchableOpacity onPress={null}>
           <Text style={styles.sectionText}>Gewichte</Text>
         </TouchableOpacity>

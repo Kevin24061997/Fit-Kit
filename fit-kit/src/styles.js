@@ -275,6 +275,16 @@ modalText: {
   fontWeight: 'bold',
   marginBottom: 20,
 },
+
+modalContent1: {
+  width: 320,
+  height: 500,
+  backgroundColor: 'black',
+  padding: 20,
+  borderRadius: 10,
+  alignItems: 'center',
+},
+
 difficultyButton: {
   width: 100,
   height: 40,
@@ -292,5 +302,16 @@ headingStyle: {
   marginBottom: 0,
   marginTop: - 30,
   marginLeft: 40,
+},
+
+headingStyle1: {
+  textAlign: 'center',
+  fontSize: 26,
+  fontWeight: 'bold',
+  color: 'white',
+  marginBottom: 10,
+  marginTop: 0,
+  marginLeft: 40,
 }
+
 });
