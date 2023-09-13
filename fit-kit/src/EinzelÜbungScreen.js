@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
 import { HeaderTimer } from './function/HeaderTimer';
 import { PushTimer } from './function/PushTimer';
+import { Bilder } from './function/Bilder';
 
 export function EinzelÜbungScreen() {
   const navigation = useNavigation();
@@ -17,36 +18,7 @@ export function EinzelÜbungScreen() {
   const { startTimer, decreaseTime, handleTimerTextClick, formatTime1, increaseTime } = PushTimer();
 
   // Bilder ##############################
-  const images = [
-    {
-      primaryImage: require('../Bilder/1.jpg'),
-      specialImage: require('../Bilder/7.jpg'), // Spezielles Bild für Bild 1
-    },
-    {
-      primaryImage: require('../Bilder/2.jpg'),
-      specialImage: require('../Bilder/6.jpg'), // Spezielles Bild für Bild 2
-    },
-    {
-      primaryImage: require('../Bilder/3.jpg'),
-      specialImage: require('../Bilder/7.jpg'), // Spezielles Bild für Bild 1
-    },
-    {
-      primaryImage: require('../Bilder/4.jpg'),
-      specialImage: require('../Bilder/7.jpg'), // Spezielles Bild für Bild 1
-    },
-    {
-      primaryImage: require('../Bilder/5.jpg'),
-      specialImage: require('../Bilder/7.jpg'), // Spezielles Bild für Bild 1
-    },
-    {
-      primaryImage: require('../Bilder/6.jpg'),
-      specialImage: require('../Bilder/7.jpg'), // Spezielles Bild für Bild 1
-    },
-    {
-      primaryImage: require('../Bilder/7.jpg'),
-      specialImage: require('../Bilder/7.jpg'), // Spezielles Bild für Bild 1
-    },
-  ]
+  const images = Bilder
 
   // Inhalt für jedes Bild
   const [imageContents, setImageContents] = useState([
