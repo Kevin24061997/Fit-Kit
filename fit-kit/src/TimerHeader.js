@@ -20,10 +20,6 @@ export function TimerHeader() {
 
   HeaderTimer(navigation, true);
 
-  const navigateToEinzelÜbung = () => {
-    navigation.navigate('EinzelÜbung');
-  };
-
   const addÜbungsBlock = () => {
     if (übungsBlöcke.length < 9) {
       const newÜbungsBlöcke = [...übungsBlöcke, `Übung ${übungsBlöcke.length + 1}`];
