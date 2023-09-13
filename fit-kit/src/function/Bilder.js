@@ -4,7 +4,7 @@ export const Bilder = [
     specialImage: require('../../Bilder/7.jpg'), // Spezielles Bild für Bild 1
   },
   {
-    primaryImage: require('../../..Bilder/2.jpg'),
+    primaryImage: require('../../Bilder/2.jpg'),
     specialImage: require('../../Bilder/6.jpg'), // Spezielles Bild für Bild 2
   },
   {
