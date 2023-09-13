@@ -4,8 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 
 // Stile und Funktionen importieren
 import { styles } from './styles';
-import { schedulePushNotification } from './function/PushUp';
 import { HeaderTimer } from './function/HeaderTimer';
+import { PushTimer } from './function/PushTimer';
 
 export function EinzelÜbungScreen() {
   const navigation = useNavigation();
@@ -14,61 +14,39 @@ export function EinzelÜbungScreen() {
 
   // Timer in Container ##############################
 
-  const [time1, setTime1] = useState(90); // Zeit in Sekunden (2 Minuten = 90 Sekunden)
-  const [isRunning1, setIsRunning1] = useState(false);
-
-  useEffect(() => {
-    if (isRunning1) {
-      const timerInterval = setInterval(() => {
-        if (time1 > 0) {
-          setTime1(time1 - 1);
-        } else {
-          schedulePushNotification();
-          setTime1(90);
-          setIsRunning1(false);
-        }
-      }, 1000);
-      return () => clearInterval(timerInterval);
-    }
-  }, [isRunning1, time1]);
-
-  const startTimer = () => {
-    setIsRunning1(true);
-  };
-
-  const decreaseTime = () => {
-    if (time1 > 10) {
-      setTime1((prevTime) => prevTime - 10);
-    }
-  };
-
-  const increaseTime = () => {
-    setTime1((prevTime) => prevTime + 10);
-  };
-
-  const formatTime1 = () => {
-    const minutes = Math.floor(time1 / 60);
-    const seconds = time1 % 60;
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
-
-  const handleTimerTextClick = () => {
-    // Wenn der Timer nicht läuft, starten Sie ihn
-    if (!isRunning1) {
-      startTimer();
-    }
-  };
+  const { startTimer, decreaseTime, handleTimerTextClick, formatTime1, increaseTime } = PushTimer();
 
   // Bilder ##############################
   const images = [
-    require('../Bilder/1.jpg'),
-    require('../Bilder/2.jpg'),
-    require('../Bilder/3.jpg'),
-    require('../Bilder/4.jpg'),
-    require('../Bilder/5.jpg'),
-    require('../Bilder/6.jpg'),
-    require('../Bilder/7.jpg'),
-  ];
+    {
+      primaryImage: require('../Bilder/1.jpg'),
+      specialImage: require('../Bilder/7.jpg'), // Spezielles Bild für Bild 1
+    },
+    {
+      primaryImage: require('../Bilder/2.jpg'),
+      specialImage: require('../Bilder/6.jpg'), // Spezielles Bild für Bild 2
+    },
+    {
+      primaryImage: require('../Bilder/3.jpg'),
+      specialImage: require('../Bilder/7.jpg'), // Spezielles Bild für Bild 1
+    },
+    {
+      primaryImage: require('../Bilder/4.jpg'),
+      specialImage: require('../Bilder/7.jpg'), // Spezielles Bild für Bild 1
+    },
+    {
+      primaryImage: require('../Bilder/5.jpg'),
+      specialImage: require('../Bilder/7.jpg'), // Spezielles Bild für Bild 1
+    },
+    {
+      primaryImage: require('../Bilder/6.jpg'),
+      specialImage: require('../Bilder/7.jpg'), // Spezielles Bild für Bild 1
+    },
+    {
+      primaryImage: require('../Bilder/7.jpg'),
+      specialImage: require('../Bilder/7.jpg'), // Spezielles Bild für Bild 1
+    },
+  ]
 
   // Inhalt für jedes Bild
   const [imageContents, setImageContents] = useState([
@@ -182,23 +160,6 @@ export function EinzelÜbungScreen() {
     setInfoVisible(true)
   }
 
-  // const imagePairs = [
-  //   [require('../Bilder/1.jpg'), require('../Bilder/3.jpg')],
-  //   [require('../Bilder/2.jpg'), require('../Bilder/4.jpg')],
-  //   // Füge weitere Bildpaare hinzu
-  // ];
-  // const [imagePairIndex, setImagePairIndex] = useState(0);
-
-  // useEffect(() => {
-  //   const imagePairInterval = setInterval(() => {
-  //     setImagePairIndex((prevIndex) =>
-  //       prevIndex === imagePairs.length - 1 ? 0 : prevIndex + 1
-  //     );
-  //   }, 3000);
-  
-  //   return () => clearInterval(imagePairInterval);
-  // }, [imagePairs]);
-  
 
   const handleAdd = () => {
     // Hier den Code zur Verarbeitung des Hinzufügen-Buttons einfügen
@@ -230,13 +191,36 @@ export function EinzelÜbungScreen() {
     setSelectedImageIndex(index);
   };
 
+  const ImageSwitcher = ({ imageIndex }) => {
+    const [showSpecialImage, setShowSpecialImage] = useState(true);
+  
+    useEffect(() => {
+      // Starten Sie den Timer, um das Bild alle 1,5 Sekunden zu wechseln
+      const timer = setInterval(() => {
+        setShowSpecialImage((prevShowSpecialImage) => !prevShowSpecialImage);
+      }, 1500);
+  
+      return () => {
+        clearInterval(timer);
+      };
+    }, []);
+  
+    return (
+      <Image
+        source={images[imageIndex][showSpecialImage ? 'specialImage' : 'primaryImage']}
+        style={{ width: 230, height: 230, borderRadius: 10, marginBottom: 10 }}
+      />
+    );
+  };
+  
+
   return (
     <View style={styles.infoBlockContainer}>
       <ScrollView horizontal style={{ flexDirection: 'row' }}>
         {images.map((image, index) => (
           <TouchableOpacity key={index} onPress={() => handleImageSelect(index)}>
             <Image
-              source={image}
+              source={image.primaryImage}
               style={{ width: 100, height: 100, marginRight: 10, borderRadius: 10 }}
             />
           </TouchableOpacity>
@@ -244,7 +228,7 @@ export function EinzelÜbungScreen() {
       </ScrollView>
 
       <View style={styles.container1 }>
-        <Image source={images[selectedImageIndex]} style={{ width: 70, height: 70, borderRadius: 10 }} />
+      <Image source={images[selectedImageIndex].primaryImage} style={{ width: 70, height: 70, borderRadius: 10 }} />
         <Text style={styles.headingStyle}>{imageContents[selectedImageIndex].heading}</Text>
         <View style={styles.timecontainer}>
           <View style={styles.timerControls}>
@@ -370,7 +354,7 @@ export function EinzelÜbungScreen() {
             <View style={styles.modalContent1}>
             <ScrollView>
               <Text style={styles.headingStyle1}>{imageContents[selectedImageIndex].heading}</Text>
-              <Image source={images[selectedImageIndex]} style={{ width: 230, height: 230, borderRadius: 10, marginBottom: 10 }} />
+              <ImageSwitcher imageIndex={selectedImageIndex} />
               <Text style={[styles.modalText, { color: 'white' }]}>
                 so und so musst du das machen und so gehts weiter und weiter und weiter 
               </Text>
