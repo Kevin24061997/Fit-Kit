@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity, FlatList, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -7,6 +7,7 @@ import { styles } from './styles';
 import { HeaderTimer } from './function/HeaderTimer';
 import { PushTimer } from './function/PushTimer';
 import { Bilder } from './function/Bilder';
+import { BildTausch } from './function/BildTausch';
 
 export function EinzelÜbungScreen() {
   const navigation = useNavigation();
@@ -163,27 +164,7 @@ export function EinzelÜbungScreen() {
     setSelectedImageIndex(index);
   };
 
-  const ImageSwitcher = ({ imageIndex }) => {
-    const [showSpecialImage, setShowSpecialImage] = useState(true);
-  
-    useEffect(() => {
-      // Starten Sie den Timer, um das Bild alle 1,5 Sekunden zu wechseln
-      const timer = setInterval(() => {
-        setShowSpecialImage((prevShowSpecialImage) => !prevShowSpecialImage);
-      }, 1500);
-  
-      return () => {
-        clearInterval(timer);
-      };
-    }, []);
-  
-    return (
-      <Image
-        source={images[imageIndex][showSpecialImage ? 'specialImage' : 'primaryImage']}
-        style={{ width: 230, height: 230, borderRadius: 10, marginBottom: 10 }}
-      />
-    );
-  };
+  const ImageSwitcher = BildTausch(images);
   
 
   return (
