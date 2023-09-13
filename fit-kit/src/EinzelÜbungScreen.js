@@ -7,7 +7,8 @@ import { styles } from './styles';
 import { HeaderTimer } from './function/HeaderTimer';
 import { PushTimer } from './function/PushTimer';
 import { Bilder } from './function/Bilder';
-import { BildTausch } from './function/BildTausch';
+import { DifficultyModal } from './Modal/DifficultyModal'; // Importieren Sie das Schwierigkeitsauswahl-Modal
+import { InfoModal } from './Modal/InfoModal'; // Importieren Sie das Informations-Modal
 
 export function EinzelÜbungScreen() {
   const navigation = useNavigation();
@@ -164,7 +165,7 @@ export function EinzelÜbungScreen() {
     setSelectedImageIndex(index);
   };
 
-  const ImageSwitcher = BildTausch(images);
+ 
   
 
   return (
@@ -242,49 +243,10 @@ export function EinzelÜbungScreen() {
           </View>
         </View>
       </View>
-      
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={handleModalClose}>
-        <View style={[styles.modalContainer,]}>
-          <View style={styles.modalContent}>
-            <Text style={[styles.modalText, { color: 'white' }]}>Wie schwer war die Übung?</Text>
-            <TouchableOpacity
-              onPress={() => handleDifficultySelect('leicht')}
-              style={[styles.difficultyButton, { backgroundColor: 'green' }]}
-            >
-              <Text style={[styles.buttonText1, { color: 'black' }]}>Leicht</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleDifficultySelect('mäßig')}
-              style={[styles.difficultyButton, { backgroundColor: 'yellowgreen' }]}
-            >
-              <Text style={[styles.buttonText1, { color: 'black' }]}>Mäßig</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleDifficultySelect('mittel')}
-              style={[styles.difficultyButton, { backgroundColor: 'yellow' }]}
-            >
-              <Text style={[styles.buttonText1, { color: 'black' }]}>Mittel</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleDifficultySelect('anstrengend')}
-              style={[styles.difficultyButton, { backgroundColor: 'orange' }]}
-            >
-              <Text style={[styles.buttonText1, { color: 'black' }]}>Schwer</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleDifficultySelect('schwer')}
-              style={[styles.difficultyButton, { backgroundColor: 'red' }]}
-            >
-              <Text style={[styles.buttonText1, { color: 'black' }]}>Anstrengend</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
+      <DifficultyModal
+        modalVisible={modalVisible}
+        handleModalClose={handleModalClose}
+        handleDifficultySelect={handleDifficultySelect}/>
       <View style={styles.buttonsContainer1}>
         <TouchableOpacity onPress={handleDelete} style={styles.button1}>
           <Text style={styles.buttonText1}>-</Text>
@@ -298,26 +260,11 @@ export function EinzelÜbungScreen() {
         <TouchableOpacity onPress={InfoTouch}>
           <Text style={styles.sectionText}>Info</Text>
         </TouchableOpacity>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={infoVisible}
-          onRequestClose={handleInfoClose}>
-          <View style={[styles.modalContainer]}>
-            <View style={styles.modalContent1}>
-            <ScrollView>
-              <Text style={styles.headingStyle1}>{imageContents[selectedImageIndex].heading}</Text>
-              <ImageSwitcher imageIndex={selectedImageIndex} />
-              <Text style={[styles.modalText, { color: 'white' }]}>
-                so und so musst du das machen und so gehts weiter und weiter und weiter 
-              </Text>
-              <TouchableOpacity onPress={handleInfoClose}>
-                <Text style={{ color: 'white' }}>Schließen</Text>
-              </TouchableOpacity>
-            </ScrollView>
-            </View>
-          </View>
-        </Modal>
+        <InfoModal
+        infoVisible={infoVisible}
+        handleInfoClose={handleInfoClose}
+        selectedImageIndex={selectedImageIndex}
+        imageContents={imageContents}/>
         <TouchableOpacity onPress={null}>
           <Text style={styles.sectionText}>Gewichte</Text>
         </TouchableOpacity>
