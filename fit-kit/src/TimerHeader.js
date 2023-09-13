@@ -1,44 +1,44 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
 import { HeaderTimer } from './function/HeaderTimer';
+import { Bilder } from './function/Bilder';
 
-// Timer ##################################################################
+
 export function TimerHeader() {
   const navigation = useNavigation();
   const [übungsBlöcke, setÜbungsBlöcke] = useState([
-    'Übung',
-    'Übung',
-    'Übung',
-    'Übung',
-    'Übung',
-    'Übung',
-    'Übung',
+    'Übung ',
+    'Übung ',
+    'Übung ',
+    'Übung ',
+    'Übung ',
+    'Übung ',
+    'Übung ',
   ]);
-  
+
   HeaderTimer(navigation, true);
-  
+
   const navigateToEinzelÜbung = () => {
     navigation.navigate('EinzelÜbung');
   };
 
   const addÜbungsBlock = () => {
     if (übungsBlöcke.length < 9) {
-      // Hier füge einen neuen Übungsblock hinzu, z.B. "Übung X"
       const newÜbungsBlöcke = [...übungsBlöcke, `Übung ${übungsBlöcke.length + 1}`];
       setÜbungsBlöcke(newÜbungsBlöcke);
     }
   };
-  
+
   const removeÜbungsBlock = () => {
     if (übungsBlöcke.length > 0) {
-      // Hier entferne den letzten Übungsblock
       const newÜbungsBlöcke = übungsBlöcke.slice(0, übungsBlöcke.length - 1);
       setÜbungsBlöcke(newÜbungsBlöcke);
     }
   };
 
+  const images = Bilder;
 
   return (
     <ScrollView style={styles.ÜbungsBlockContainer}>
@@ -50,16 +50,24 @@ export function TimerHeader() {
           Entfernen
         </Text>
       </View>
-      <TouchableOpacity onPress={navigateToEinzelÜbung}>
-        {übungsBlöcke.map((übungsBlock, index) => (
-          <View style={styles.ÜbungsBlock} key={index}>
-            <Text style={styles.infoText}>{`${index + 1}: ${übungsBlock}`}</Text>
-          </View>
-        ))}
-      </TouchableOpacity>
+      {übungsBlöcke.map((übungsBlock, index) => (
+        <TouchableOpacity
+          key={index}
+          style={styles.ÜbungsBlock}
+          onPress={() => navigation.navigate('EinzelÜbung', { selectedImageIndex: index, images })}>
+          <Image
+            source={images[index].primaryImage} // Verwenden Sie das Bild aus der Bilder-Datei basierend auf dem Index
+            style={{
+              width: 120,
+              height: 120,
+              borderRadius: 10,
+              padding: 10,
+              marginTop: 5,
+            }}
+          />
+          <Text style={styles.infoText}>{`${index + 1}: ${übungsBlock}`}</Text>
+        </TouchableOpacity>
+      ))}
     </ScrollView>
   );
 }
-
-
-
