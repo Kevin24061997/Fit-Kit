@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity, FlatList, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Stile und Funktionen importieren
 import { styles } from './styles';
@@ -12,6 +13,33 @@ import { InfoModal } from './Modal/InfoModal'; // Importieren Sie das Informatio
 
 export function EinzelÜbungScreen() {
   const navigation = useNavigation();
+
+    // Funktion zum Speichern der berechneten Daten
+  const saveImageContentsToStorage = async (imageContents) => {
+    try {
+      const jsonValue = JSON.stringify(imageContents);
+      await AsyncStorage.setItem('imageContents', jsonValue);
+    } catch (error) {
+      console.error('Fehler beim Speichern der Daten:', error);
+    }
+  };
+
+  // Funktion zum Laden der gespeicherten Daten
+  const loadImageContentsFromStorage = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('imageContents');
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (error) {
+      console.error('Fehler beim Laden der Daten:', error);
+      return null;
+    }
+  };
+
+  // Funktion zum Speichern der Daten, wenn sie geändert werden
+  const saveData = (updatedImageContents) => {
+    setImageContents(updatedImageContents);
+    saveImageContentsToStorage(updatedImageContents);
+  };
   
   HeaderTimer(navigation, false);
 
@@ -75,7 +103,6 @@ export function EinzelÜbungScreen() {
     },
   ]);
   
-
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
 
@@ -108,7 +135,7 @@ export function EinzelÜbungScreen() {
       updatedImageContents[selectedImageIndex].checkboxList1 = newCheckboxList1;
       updatedImageContents[selectedImageIndex].checkboxList2 = newCheckboxList2;
 
-      setImageContents(updatedImageContents);
+      saveData(updatedImageContents);
     }
   };
 
@@ -120,7 +147,7 @@ export function EinzelÜbungScreen() {
     const updatedImageContents = [...imageContents];
     updatedImageContents[selectedImageIndex].checkboxList2 = newCheckboxList2;
 
-    setImageContents(updatedImageContents);
+    saveData(updatedImageContents);
     setModalVisible(true); // Öffnet das Modal beim Klicken auf die Checkbox
   };
 
@@ -152,7 +179,7 @@ export function EinzelÜbungScreen() {
       updatedImageContents[selectedImageIndex].checkboxList1 = newCheckboxList1;
       updatedImageContents[selectedImageIndex].checkboxList2 = newCheckboxList2;
 
-      setImageContents(updatedImageContents);
+      saveData(updatedImageContents);
     } else {
       // Hier können Sie eine Benachrichtigung anzeigen oder andere Maßnahmen ergreifen,
       // um dem Benutzer mitzuteilen, dass die maximale Anzahl von Einträgen erreicht ist.
@@ -165,7 +192,17 @@ export function EinzelÜbungScreen() {
     setSelectedImageIndex(index);
   };
 
- 
+  // Wenn die Komponente geladen wird, versuche, die gespeicherten Daten zu laden
+  useEffect(() => {
+    const loadStoredData = async () => {
+      const storedData = await loadImageContentsFromStorage();
+      if (storedData) {
+        setImageContents(storedData);
+      }
+    };
+
+    loadStoredData();
+  }, []);
   
 
   return (
