@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity, FlatList, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Stile und Funktionen importieren
 import { styles } from './styles';
@@ -10,30 +9,13 @@ import { PushTimer } from './function/PushTimer';
 import { Bilder } from './function/Bilder';
 import { DifficultyModal } from './Modal/DifficultyModal'; // Importieren Sie das Schwierigkeitsauswahl-Modal
 import { InfoModal } from './Modal/InfoModal'; // Importieren Sie das Informations-Modal
+import { Speichern } from './function/Speichern';
 
 export function EinzelÜbungScreen() {
   const navigation = useNavigation();
 
     // Funktion zum Speichern der berechneten Daten
-  const saveImageContentsToStorage = async (imageContents) => {
-    try {
-      const jsonValue = JSON.stringify(imageContents);
-      await AsyncStorage.setItem('imageContents', jsonValue);
-    } catch (error) {
-      console.error('Fehler beim Speichern der Daten:', error);
-    }
-  };
-
-  // Funktion zum Laden der gespeicherten Daten
-  const loadImageContentsFromStorage = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('imageContents');
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (error) {
-      console.error('Fehler beim Laden der Daten:', error);
-      return null;
-    }
-  };
+  const { saveImageContentsToStorage, loadImageContentsFromStorage } = Speichern();
 
   // Funktion zum Speichern der Daten, wenn sie geändert werden
   const saveData = (updatedImageContents) => {
