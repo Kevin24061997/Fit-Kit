@@ -10,6 +10,7 @@ import { Bilder } from './function/Bilder';
 import { DifficultyModal } from './Modal/DifficultyModal'; // Importieren Sie das Schwierigkeitsauswahl-Modal
 import { InfoModal } from './Modal/InfoModal'; // Importieren Sie das Informations-Modal
 import { Speichern } from './function/Speichern';
+import { initialImageContents } from './function/imageData';
 
 export function EinzelÜbungScreen() {
   const navigation = useNavigation();
@@ -33,57 +34,7 @@ export function EinzelÜbungScreen() {
   const images = Bilder
 
   // Inhalt für jedes Bild
-  const [imageContents, setImageContents] = useState([
-    {
-      heading: 'Bild 1 Überschrift',
-      list1: ['01', '02', '03', '04', '05'],
-      list2: ['01', '02', '03', '04', '05'],
-      checkboxList1: [false, false, false, false, false],
-      checkboxList2: [false, false, false, false, false],
-    },
-    {
-      heading: 'Bild 2 Überschrift',
-      list1: ['06', '07', '08', '09', '10'],
-      list2: ['06', '07', '08', '09', '10'],
-      checkboxList1: [false, false, false, false, false],
-      checkboxList2: [false, false, false, false, false],
-    },
-    {
-      heading: 'Bild 3 Überschrift',
-      list1: ['11', '12', '13', '14', '15'],
-      list2: ['11', '12', '13', '14', '15'],
-      checkboxList1: [false, false, false, false, false],
-      checkboxList2: [false, false, false, false, false],
-    },
-    {
-      heading: 'Bild 4 Überschrift',
-      list1: ['16', '17', '18', '19', '20'],
-      list2: ['16', '17', '18', '19', '20'],
-      checkboxList1: [false, false, false, false, false],
-      checkboxList2: [false, false, false, false, false],
-    },
-    {
-      heading: 'Bild 5 Überschrift',
-      list1: ['21', '22', '23', '24', '25'],
-      list2: ['21', '22', '23', '24', '25'],
-      checkboxList1: [false, false, false, false, false],
-      checkboxList2: [false, false, false, false, false],
-    },
-    {
-      heading: 'Bild 6 Überschrift',
-      list1: ['26', '27', '28', '29', '30'],
-      list2: ['26', '27', '28', '29', '30'],
-      checkboxList1: [false, false, false, false, false],
-      checkboxList2: [false, false, false, false, false],
-    },
-    {
-      heading: 'Bild 7 Überschrift',
-      list1: ['31', '32', '33', '34', '35'],
-      list2: ['31', '32', '33', '34', '35'],
-      checkboxList1: [false, false, false, false, false],
-      checkboxList2: [false, false, false, false, false],
-    },
-  ]);
+  const [imageContents, setImageContents] = useState(initialImageContents);
   
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
@@ -100,7 +51,7 @@ export function EinzelÜbungScreen() {
 
   const handleDelete = () => {
     // Hier den Code zur Verarbeitung des Löschen-Buttons einfügen
-    if (imageContents[selectedImageIndex].list1.length > 0 && imageContents[selectedImageIndex].list2.length > 0) {
+    if (imageContents[selectedImageIndex].list1.length > 1 && imageContents[selectedImageIndex].list2.length > 0) {
       const newList1 = [...imageContents[selectedImageIndex].list1];
       const newList2 = [...imageContents[selectedImageIndex].list2];
       const newCheckboxList1 = [...imageContents[selectedImageIndex].checkboxList1];
