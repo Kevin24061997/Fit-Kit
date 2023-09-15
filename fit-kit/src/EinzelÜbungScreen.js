@@ -11,9 +11,13 @@ import { DifficultyModal } from './Modal/DifficultyModal'; // Importieren Sie da
 import { InfoModal } from './Modal/InfoModal'; // Importieren Sie das Informations-Modal
 import { Speichern } from './function/Speichern';
 import { initialImageContents } from './function/imageData';
+import { useRoute } from '@react-navigation/native';
 
 export function EinzelÜbungScreen() {
   const navigation = useNavigation();
+
+  const route = useRoute();
+  const [selectedImageIndex, setSelectedImageIndex] = useState(route.params.selectedImageIndex);
 
     // Funktion zum Speichern der berechneten Daten
   const { saveImageContentsToStorage, loadImageContentsFromStorage } = Speichern();
@@ -118,11 +122,11 @@ export function EinzelÜbungScreen() {
       // um dem Benutzer mitzuteilen, dass die maximale Anzahl von Einträgen erreicht ist.
     }
   };
-
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  
 
   const handleImageSelect = (index) => {
     setSelectedImageIndex(index);
+    
   };
 
   // Wenn die Komponente geladen wird, versuche, die gespeicherten Daten zu laden
@@ -136,7 +140,7 @@ export function EinzelÜbungScreen() {
 
     loadStoredData();
   }, []);
-  
+
 
   return (
     <View style={styles.infoBlockContainer}>
