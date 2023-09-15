@@ -4,32 +4,26 @@ import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
 import { HeaderTimer } from './function/HeaderTimer';
 import { Bilder } from './function/Bilder';
+import { initialImageContents } from './function/imageData';
 
 
 export function TimerHeader() {
   const navigation = useNavigation();
-  const [übungsBlöcke, setÜbungsBlöcke] = useState([
-    'Übung ',
-    'Übung ',
-    'Übung ',
-    'Übung ',
-    'Übung ',
-    'Übung ',
-    'Übung ',
-  ]);
+  
+  const [imageContents, setÜbungsBlöcke] = useState(initialImageContents);
 
   HeaderTimer(navigation, true);
 
   const addÜbungsBlock = () => {
-    if (übungsBlöcke.length < 9) {
-      const newÜbungsBlöcke = [...übungsBlöcke, `Übung ${übungsBlöcke.length + 1}`];
+    if (imageContents.length < 9) {
+      const newÜbungsBlöcke = [...imageContents, initialImageContents[imageContents.length]];
       setÜbungsBlöcke(newÜbungsBlöcke);
     }
   };
 
   const removeÜbungsBlock = () => {
-    if (übungsBlöcke.length > 0) {
-      const newÜbungsBlöcke = übungsBlöcke.slice(0, übungsBlöcke.length - 1);
+    if (imageContents.length > 0) {
+      const newÜbungsBlöcke = imageContents.slice(0, imageContents.length - 1);
       setÜbungsBlöcke(newÜbungsBlöcke);
     }
   };
@@ -46,13 +40,13 @@ export function TimerHeader() {
           Entfernen
         </Text>
       </View>
-      {übungsBlöcke.map((übungsBlock, index) => (
+      {imageContents.map((imageContent, index) => (
         <TouchableOpacity
           key={index}
           style={styles.ÜbungsBlock}
           onPress={() => navigation.navigate('EinzelÜbung', { selectedImageIndex: index, images })}>
           <Image
-            source={images[index].primaryImage} // Verwenden Sie das Bild aus der Bilder-Datei basierend auf dem Index
+            source={images[index].primaryImage}
             style={{
               width: 120,
               height: 120,
@@ -61,7 +55,7 @@ export function TimerHeader() {
               marginTop: 5,
             }}
           />
-          <Text style={styles.infoText}>{`${index + 1}: ${übungsBlock}`}</Text>
+          <Text style={styles.buttonText1}>{`${index + 1}: ${imageContent.heading}`}</Text>
         </TouchableOpacity>
       ))}
     </ScrollView>
