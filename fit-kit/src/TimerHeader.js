@@ -22,7 +22,7 @@ export function TimerHeader() {
   };
 
   const removeÜbungsBlock = () => {
-    if (imageContents.length > 0) {
+    if (imageContents.length > 1) {
       const newÜbungsBlöcke = imageContents.slice(0, imageContents.length - 1);
       setÜbungsBlöcke(newÜbungsBlöcke);
     }
