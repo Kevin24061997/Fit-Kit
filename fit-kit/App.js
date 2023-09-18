@@ -8,11 +8,13 @@ import { Page } from './src/Page';
 import { TimerContext } from './src/TimerContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-import {InputPage1} from './InputPage1';
-import {InputPage2} from './InputPage2';
 import { MainScreen } from './src/MainScreen';
-
+import {InputPage1} from './src/InputPages/InputPage1';
+import {InputPage2} from './src/InputPages/InputPage2';
+import {InputPage3} from './src/InputPages/InputPage3';
+import {InputPage4} from './src/InputPages/InputPage4';
+import {InputPage5} from './src/InputPages/InputPage5';
+import {InputPage6} from './src/InputPages/InputPage6';
 
 
 const clearAsyncStorage = async () => {
@@ -69,18 +71,60 @@ export function App() {
           <Stack.Screen name="InputPage1" component={InputPage1} options={{
             headerStyle: {
               backgroundColor: 'black',
+            },headerTitleStyle: {
+              color: 'white', 
             },
-          }} 
-          />
+          }}  />
           <Stack.Screen
             name="InputPage2"
             component={InputPage2}
             options={{
               headerStyle: {
                 backgroundColor: 'black',
+              },headerTitleStyle: {
+                color: 'white', 
               },
-            }}
-          />
+            }}/>
+          <Stack.Screen
+            name="InputPage3"
+            component={InputPage3}
+            options={{
+              headerStyle: {
+                backgroundColor: 'black',
+              },headerTitleStyle: {
+                color: 'white', 
+              },
+            }}/>
+          <Stack.Screen
+            name="InputPage4"
+            component={InputPage4}
+            options={{
+              headerStyle: {
+                backgroundColor: 'black',
+              },headerTitleStyle: {
+                color: 'white', 
+              },
+            }}/>
+          <Stack.Screen
+            name="InputPage5"
+            component={InputPage5}
+            options={{
+              headerStyle: {
+                backgroundColor: 'black',
+              },headerTitleStyle: {
+                color: 'white', 
+              },
+            }}/>
+          <Stack.Screen
+            name="InputPage6"
+            component={InputPage6}
+            options={{
+              headerStyle: {
+                backgroundColor: 'black',
+              },headerTitleStyle: {
+                color: 'white', 
+              },
+            }}/>        
           <Stack.Screen
             name="Timer"
             component={TimerHeader}

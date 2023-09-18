@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, ScrollView, TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export function InputPage2() {
+export function InputPage6() {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
-  const navigateToTrainingPage = () => {
+  function navigateToPage() {
     navigation.navigate('Training');
-  };
+  }
 
   const [name, setName] = useState('');
   const [inputDone, setInputDone] = useState(false);
@@ -19,14 +20,14 @@ export function InputPage2() {
   }, []);
 
   useEffect(() => {
-    if (inputDone) {
-      navigateToTrainingPage(); // Hier rufe ich die Funktion auf, um zur Training-Seite zu navigieren
+    if (isFocused && inputDone) {
+      navigateToPage(); // Hier rufe ich die Funktion auf, um zur Training-Seite zu navigieren
     }
-  }, [inputDone]);
+  }, [isFocused, inputDone]);
 
   const checkInputStatus = async () => {
     try {
-      const inputStatus = await AsyncStorage.getItem('inputStatusPage2');
+      const inputStatus = await AsyncStorage.getItem('inputStatusPage6');
       if (inputStatus === 'done') {
         setInputDone(true);
       }
@@ -48,7 +49,7 @@ export function InputPage2() {
 
   const handleInputDone = async () => {
     try {
-      await AsyncStorage.setItem('inputStatusPage2', 'done');
+      await AsyncStorage.setItem('inputStatusPage6', 'done');
       await AsyncStorage.setItem('name', name); // Eingabe speichern
       setInputDone(true);
     } catch (error) {
