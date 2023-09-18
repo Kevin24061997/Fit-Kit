@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {InputPage1} from './InputPage1';
 import {InputPage2} from './InputPage2';
+import { MainScreen } from './src/MainScreen';
 
 
 
@@ -102,35 +103,5 @@ export function App() {
     </TimerContext.Provider>  
   );
 }
-
-function MainScreen({ navigation }) {
-  useEffect(() => {
-    checkIfAppStarted();
-  }, []);
-
-  const checkIfAppStarted = async () => {
-    try {
-      const value = await AsyncStorage.getItem('appStarted');
-      if (value === null) {
-        // App wird zum ersten Mal gestartet
-        await AsyncStorage.setItem('appStarted', 'true'); // Markieren Sie die App als gestartet
-        navigation.replace('InputPage1'); // Navigieren zur InputPage1 beim ersten Start
-      } else {
-        // App wurde zuvor gestartet
-        navigation.replace('Training'); // Navigieren zur Training-Seite bei jedem anderen Start
-      }
-    } catch (error) {
-      console.error('Fehler beim Lesen von AsyncStorage:', error);
-    }
-  };
-
-  return (
-    <View style={styles.mainseite}>
-      {/* Inhalt Ihrer Hauptseite */}
-    </View>
-  );
-};
-
-
 
 export default App;
