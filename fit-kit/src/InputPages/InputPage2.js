@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, ScrollView, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useUserData } from './UserDataContext'; // Importieren Sie den Context
 
 export function InputPage2() {
   const navigation = useNavigation();
+  const { userData, setUserData } = useUserData(); // Verwenden Sie den UserDataContext
 
   function navigateToInputPage3() {
     navigation.navigate('InputPage3');
   }
 
-  const [name, setName] = useState('');
+  const [gender, setGender] = useState('');
   const [inputDone, setInputDone] = useState(false);
 
   useEffect(() => {
@@ -20,7 +22,7 @@ export function InputPage2() {
 
   useEffect(() => {
     if (inputDone) {
-      navigateToInputPage3(); // Hier rufe ich die Funktion auf, um zur Training-Seite zu navigieren
+      navigateToInputPage3();
     }
   }, [inputDone]);
 
@@ -37,9 +39,15 @@ export function InputPage2() {
 
   const loadInputData = async () => {
     try {
-      const savedName = await AsyncStorage.getItem('name');
-      if (savedName) {
-        setName(savedName);
+      const userDataJSON = await AsyncStorage.getItem('userData');
+      if (userDataJSON) {
+        const userDataFromStorage = JSON.parse(userDataJSON);
+        if (userDataFromStorage.gender) {
+          setGender(userDataFromStorage.gender);
+        }
+      } else {
+        // Wenn userData nicht vorhanden ist, initialisieren Sie es mit Anfangswerten
+        await AsyncStorage.setItem('userData', JSON.stringify(userData));
       }
     } catch (error) {
       console.error('Fehler beim Laden der Eingabedaten:', error);
@@ -48,8 +56,9 @@ export function InputPage2() {
 
   const handleInputDone = async () => {
     try {
+      const updatedUserData = { ...userData, gender: gender }; // Aktualisieren Sie userData mit dem Geschlecht
+      setUserData(updatedUserData); // Setzen Sie die aktualisierten Daten im Context
       await AsyncStorage.setItem('inputStatusPage2', 'done');
-      await AsyncStorage.setItem('name', name); // Eingabe speichern
       setInputDone(true);
     } catch (error) {
       console.error('Fehler beim Speichern des Eingabestatus:', error);
@@ -60,11 +69,11 @@ export function InputPage2() {
     <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       {!inputDone ? (
         <View>
-          <Text>Seite 2 - Geben Sie Ihren Namen ein:</Text>
+          <Text>Geben Sie Ihr Geschlecht ein:</Text>
           <TextInput
-            value={name}
-            onChangeText={(text) => setName(text)}
-            placeholder="Name"
+            value={gender}
+            onChangeText={(text) => setGender(text)}
+            placeholder="Geschlecht (Mann/Frau)"
           />
           <Button title="Eingabe beenden" onPress={handleInputDone} />
         </View>

@@ -1,26 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useUserData } from './InputPages/UserDataContext';
 
 export function EinstellungScreen() {
-  const [gender, setGender] = useState('');
-  const [weight, setWeight] = useState('');
-  const [height, setHeight] = useState('');
-  const [age, setAge] = useState('');
-  const [neck, setNeck] = useState('');
-  const [waist, setWaist] = useState('');
-  const [hip, setHip] = useState('');
+  const { userData, setUserData } = useUserData();
   
-  const [bmi, setBMI] = useState(null);
-  const [bodyFatPercentage, setBodyFatPercentage] = useState(null);
-  const [muscleMass, setMuscleMass] = useState(null);
-  const [bodyWaterPercentage, setBodyWaterPercentage] = useState(null);
-  const [ffmi, setFFMI] = useState(null);
-  const [bmr, setBMR] = useState(null);
-  const [totalEnergyExpenditure, setTotalEnergyExpenditure] = useState(null); 
-  const [caloriesPerStep, setCaloriesPerStep] = useState(null);
-  const [totalCaloriesBurned, setTotalCaloriesBurned] = useState(null);
-  const [steps, setsteps] = useState(null);
+  const [gender, setGender] = useState(userData.gender || '');
+  const [weight, setWeight] = useState(userData.weight || '');
+  const [height, setHeight] = useState(userData.height || '');
+  const [age, setAge] = useState(userData.age || '');
+  const [neck, setNeck] = useState(userData.neck || '');
+  const [waist, setWaist] = useState(userData.waist || '');
+  const [hip, setHip] = useState(userData.hip || '');
+  const [bmi, setBMI] = useState(userData.bmi || null);
+  const [bodyFatPercentage, setBodyFatPercentage] = useState(userData.bodyFatPercentage || null);
+  const [muscleMass, setMuscleMass] = useState(userData.muscleMass || null);
+  const [bodyWaterPercentage, setBodyWaterPercentage] = useState(userData.bodyWaterPercentage || null);
+  const [ffmi, setFFMI] = useState(userData.ffmi || null);
+  const [bmr, setBMR] = useState(userData.bmr || null);
+  const [totalEnergyExpenditure, setTotalEnergyExpenditure] = useState(userData.totalEnergyExpenditure || null);
+  const [caloriesPerStep, setCaloriesPerStep] = useState(userData.caloriesPerStep || null);
+  const [totalCaloriesBurned, setTotalCaloriesBurned] = useState(userData.totalCaloriesBurned || null);
+  const [steps, setSteps] = useState(userData.steps || '');
 
   useEffect(() => {
     // Beim Laden der App die zuvor gespeicherten Daten aus AsyncStorage abrufen
@@ -29,7 +31,8 @@ export function EinstellungScreen() {
 
   const saveUserData = async () => {
     try {
-      const userData = {
+      const updatedUserData = {
+        ...userData,
         gender,
         weight,
         height,
@@ -48,7 +51,10 @@ export function EinstellungScreen() {
         totalCaloriesBurned,
         steps,
       };
-      await AsyncStorage.setItem('userData', JSON.stringify(userData));
+
+      // Speichern Sie userData in AsyncStorage
+      await AsyncStorage.setItem('userData', JSON.stringify(updatedUserData));
+      setUserData(updatedUserData); // Aktualisieren Sie den Context
     } catch (error) {
       console.error('Fehler beim Speichern der Daten:', error);
     }
@@ -56,38 +62,40 @@ export function EinstellungScreen() {
 
   const loadUserData = async () => {
     try {
-      const userData = await AsyncStorage.getItem('userData');
+      // Überprüfen Sie, ob userData nicht null ist
       if (userData !== null) {
-        const parsedUserData = JSON.parse(userData);
-        setGender(parsedUserData.gender);
-        setWeight(parsedUserData.weight);
-        setHeight(parsedUserData.height);
-        setAge(parsedUserData.age);
-        setNeck(parsedUserData.neck);
-        setWaist(parsedUserData.waist);
-        setHip(parsedUserData.hip);
-        setBMI(parsedUserData.bmi);
-        setBodyFatPercentage(parsedUserData.bodyFatPercentage);
-        setMuscleMass(parsedUserData.muscleMass);
-        setBodyWaterPercentage(parsedUserData.bodyWaterPercentage);
-        setFFMI(parsedUserData.ffmi);
-        setBMR(parsedUserData.bmr);
-        setTotalEnergyExpenditure(parsedUserData.totalEnergyExpenditure);
-        setCaloriesPerStep(parsedUserData.caloriesPerStep);
-        setTotalCaloriesBurned(parsedUserData.totalCaloriesBurned);
-        setsteps(parsedUserData.steps);
+        // Laden Sie die Daten aus dem userData-Objekt in die Zustandsvariablen
+        setGender(userData.gender || '');
+        setWeight(userData.weight || '');
+        setHeight(userData.height || '');
+        setAge(userData.age || '');
+        setNeck(userData.neck || '');
+        setWaist(userData.waist || '');
+        setHip(userData.hip || '');
+        setBMI(userData.bmi || null);
+        setBodyFatPercentage(userData.bodyFatPercentage || null);
+        setMuscleMass(userData.muscleMass || null);
+        setBodyWaterPercentage(userData.bodyWaterPercentage || null);
+        setFFMI(userData.ffmi || null);
+        setBMR(userData.bmr || null);
+        setTotalEnergyExpenditure(userData.totalEnergyExpenditure || null);
+        setCaloriesPerStep(userData.caloriesPerStep || null);
+        setTotalCaloriesBurned(userData.totalCaloriesBurned || null);
+        setSteps(userData.steps || '');
       }
     } catch (error) {
       console.error('Fehler beim Laden der Daten:', error);
     }
   };
+  
+
 
   const calculateCaloriesBurned = () => {
-    const isMale = gender.toLowerCase() === 'male';
+    const isMann = gender.toLowerCase() === 'mann';
     const weightKg = parseFloat(weight);
     let speedKmph;
   
-    if (isMale) {
+    if (isMann) {
       speedKmph = 5; // Annahme: Durchschnittsgeschwindigkeit für Männer: 5 km/h
     } else {
       speedKmph = 4; // Annahme: Durchschnittsgeschwindigkeit für Frauen: 4 km/h
@@ -113,30 +121,34 @@ export function EinstellungScreen() {
     setBMI(bmiValue.toFixed(2));
   };
 
-  function estimateBodyFatPercentage(gender, neck, waist, hip, height) {
-  const isMale = gender === 'Male';
+  function estimateBodyFatPercentage() {
+  const isMann = gender === 'Mann';
   const savedNeck = parseFloat(neck);
   const savedWaist = parseFloat(waist);
   const savedHip = parseFloat(hip);
   const savedHeight = parseFloat(height);
 
-  if (isMale) { // Änderung hier: Prüfe, ob isMale true ist
+  if (isMann) {
     const bodyFatPercentage =
       86.010 * Math.log10(savedWaist - savedNeck) -
       70.041 * Math.log10(savedHeight) +
       36.76;
-    return bodyFatPercentage.toFixed(2);
-  } else if (!isMale) { // Änderung hier: Prüfe, ob isMale false ist
+    
+    // Aktualisieren Sie den Zustand (userData) mit dem berechneten Wert
+    setBodyFatPercentage(bodyFatPercentage.toFixed(2));
+  } else if (!isMann) {
     const bodyFatPercentage =
       163.205 * Math.log10(savedWaist + savedHip - savedNeck) -
       97.684 * Math.log10(savedHeight) -
       78.387;
-    return bodyFatPercentage.toFixed(2);
+    
+    // Aktualisieren Sie den Zustand (userData) mit dem berechneten Wert
+    setBodyFatPercentage(bodyFatPercentage.toFixed(2));
   } else {
     console.log("Ungültiges Geschlecht angegeben.");
-    return null;
   }
 }
+
 
   const calculateLeanMass = () => {
     const weightKg = parseFloat(weight);
@@ -156,9 +168,9 @@ export function EinstellungScreen() {
     const weightKg = parseFloat(weight);
     const heightCm = parseFloat(height);
     const ageYears = parseFloat(age);
-    const isMale = gender === 'Male'; // Annahme: 'Male' oder 'female'
+    const isMann = gender === 'Mann'; // Annahme: 'Mann' oder 'feMann'
     
-    if (isMale) {
+    if (isMann) {
       const bmrValue = 10 * weightKg + 6.25 * heightCm - 5 * ageYears + 5;
       setBMR(bmrValue.toFixed(2));
     } else {
@@ -186,11 +198,11 @@ export function EinstellungScreen() {
     const weightKg = parseFloat(weight);
     const ageYears = parseFloat(age);
     const bodyHigh = parseFloat(height)
-    const isMale = gender === 'Male'; // Annahme: 'Male' oder 'female'
+    const isMann = gender === 'Mann'; // Annahme: 'Mann' oder 'feMann'
     
     let bodyWaterPercentage;
 
-    if (isMale) {
+    if (isMann) {
       bodyWaterPercentage = 2.447 - (0.09156 * ageYears) + (0.1074 * bodyHigh) + (0.3362 * weightKg);
     } else {
       bodyWaterPercentage = 2.097 - (0.1069 * ageYears) + (0.2466 * bodyHigh) + (0.3315 * weightKg);
@@ -198,13 +210,15 @@ export function EinstellungScreen() {
     setBodyWaterPercentage(bodyWaterPercentage.toFixed(2));
   };
 
+  
+
   return (
     <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Geschlecht:</Text>
       <TextInput
         value={gender}
         onChangeText={(text) => setGender(text)}
-        placeholder="Geschlecht (Male/female)"
+        placeholder="Geschlecht (Mann/frau)"
       />
       <Text>Gewicht (in kg):</Text>
       <TextInput
@@ -251,12 +265,12 @@ export function EinstellungScreen() {
       <Text>Wie viele Schritte heute:</Text>
       <TextInput
         value={steps}
-        onChangeText={(text) => setsteps(text)}
+        onChangeText={(text) =>  setSteps(text)}
         placeholder="3000"
         keyboardType="numeric"
       />
       <Button title="Berechnen" onPress={() => {
-        if (gender === 'Male' || gender === 'female') {
+        if (gender === 'Mann' || gender === 'frau') {
           estimateBodyFatPercentage();
           calculateBMI();
           calculateLeanMass();
@@ -288,7 +302,7 @@ export function EinstellungScreen() {
 
       {muscleMass !== null && (
         <View>
-          <Text>Geschätzte Muskelmasse (kg):</Text>
+          <Text>Geschätzte Fettfreie Masse (kg):</Text>
           <Text>{muscleMass}</Text>
         </View>
       )}

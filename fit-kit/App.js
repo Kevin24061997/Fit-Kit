@@ -6,7 +6,9 @@ import { EinstellungScreen } from './src/EinstellungScreen';
 import { EinzelÜbungScreen } from './src/EinzelÜbungScreen';
 import { Page } from './src/Page';
 import { TimerContext } from './src/TimerContext';
+import { UserDataProvider } from './src/InputPages/UserDataContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 import { MainScreen } from './src/MainScreen';
 import {InputPage1} from './src/InputPages/InputPage1';
@@ -50,100 +52,103 @@ export function App() {
     }
   };
 
+  
   return (
     <TimerContext.Provider value={{ timer, setTimer }}>
-      <NavigationContainer>
-      <Stack.Navigator initialRouteName="Main">
-        <Stack.Screen name="Main" component={MainScreen} options={{
-            headerStyle: {
-              backgroundColor: 'black',
-            }
-            ,}} />
-          <Stack.Screen name="Training" component={Page} options={{
-            headerStyle: {
-              backgroundColor: 'black',
-            },
-            headerTitleStyle: {
-              color: 'white', 
-            },
-          }}
-           />  
-          <Stack.Screen name="InputPage1" component={InputPage1} options={{
-            headerStyle: {
-              backgroundColor: 'black',
-            },headerTitleStyle: {
-              color: 'white', 
-            },
-          }}  />
-          <Stack.Screen
-            name="InputPage2"
-            component={InputPage2}
-            options={{
+      <UserDataProvider>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Main">
+            <Stack.Screen name="Main" component={MainScreen} options={{
+              headerStyle: {
+                backgroundColor: 'black',
+              }
+              ,}} />
+            <Stack.Screen name="Training" component={Page} options={{
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                color: 'white', 
+              },
+            }}
+            />  
+            <Stack.Screen name="InputPage1" component={InputPage1} options={{
               headerStyle: {
                 backgroundColor: 'black',
               },headerTitleStyle: {
                 color: 'white', 
               },
-            }}/>
-          <Stack.Screen
-            name="InputPage3"
-            component={InputPage3}
-            options={{
-              headerStyle: {
-                backgroundColor: 'black',
-              },headerTitleStyle: {
-                color: 'white', 
-              },
-            }}/>
-          <Stack.Screen
-            name="InputPage4"
-            component={InputPage4}
-            options={{
-              headerStyle: {
-                backgroundColor: 'black',
-              },headerTitleStyle: {
-                color: 'white', 
-              },
-            }}/>
-          <Stack.Screen
-            name="InputPage5"
-            component={InputPage5}
-            options={{
-              headerStyle: {
-                backgroundColor: 'black',
-              },headerTitleStyle: {
-                color: 'white', 
-              },
-            }}/>
-          <Stack.Screen
-            name="InputPage6"
-            component={InputPage6}
-            options={{
-              headerStyle: {
-                backgroundColor: 'black',
-              },headerTitleStyle: {
-                color: 'white', 
-              },
-            }}/>        
-          <Stack.Screen
-            name="Timer"
-            component={TimerHeader}
+            }}  />
+            <Stack.Screen
+              name="InputPage2"
+              component={InputPage2}
+              options={{
+                headerStyle: {
+                  backgroundColor: 'black',
+                },headerTitleStyle: {
+                  color: 'white', 
+                },
+              }}/>
+            <Stack.Screen
+              name="InputPage3"
+              component={InputPage3}
+              options={{
+                headerStyle: {
+                  backgroundColor: 'black',
+                },headerTitleStyle: {
+                  color: 'white', 
+                },
+              }}/>
+            <Stack.Screen
+              name="InputPage4"
+              component={InputPage4}
+              options={{
+                headerStyle: {
+                  backgroundColor: 'black',
+                },headerTitleStyle: {
+                  color: 'white', 
+                },
+              }}/>
+            <Stack.Screen
+              name="InputPage5"
+              component={InputPage5}
+              options={{
+                headerStyle: {
+                  backgroundColor: 'black',
+                },headerTitleStyle: {
+                  color: 'white', 
+                },
+              }}/>
+            <Stack.Screen
+              name="InputPage6"
+              component={InputPage6}
+              options={{
+                headerStyle: {
+                  backgroundColor: 'black',
+                },headerTitleStyle: {
+                  color: 'white', 
+                },
+              }}/>        
+            <Stack.Screen
+              name="Timer"
+              component={TimerHeader}
+              options={{
+                headerStyle: {
+                  backgroundColor: 'black',
+                },
+              }}
+            />
+            <Stack.Screen name="EinzelÜbung" component={EinzelÜbungScreen}
             options={{
               headerStyle: {
                 backgroundColor: 'black',
               },
             }}
-          />
-          <Stack.Screen name="EinzelÜbung" component={EinzelÜbungScreen}
-          options={{
-            headerStyle: {
-              backgroundColor: 'black',
-            },
-          }}
-           />
-          <Stack.Screen name="Einstellung" component={EinstellungScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+            />
+            <Stack.Screen name="Einstellung" component={EinstellungScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </UserDataProvider>
     </TimerContext.Provider>  
   );
 }
