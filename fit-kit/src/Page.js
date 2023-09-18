@@ -1,10 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './styles';
 
-export const Page = ({ navigation }) => {
+export const Page = () => {
+  const navigation = useNavigation();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [startOfWeek, setStartOfWeek] = useState(new Date());
+  const [inputDone, setInputDone] = useState(false);
+
+  useEffect(() => {
+    checkInputStatus();
+  }, []);
+
+  const checkInputStatus = async () => {
+    try {
+      const inputStatus = await AsyncStorage.getItem('inputStatusPage2'); // Hier die letzte Input-Seite angeben
+      if (inputStatus === 'done') {
+        setInputDone(true);
+      }
+    } catch (error) {
+      console.error('Fehler beim Überprüfen des Eingabestatus:', error);
+    }
+  };
 
   useEffect(() => {
     // Ermitteln Sie den aktuellen Tag der Woche (0 = Sonntag, 1 = Montag, ...)

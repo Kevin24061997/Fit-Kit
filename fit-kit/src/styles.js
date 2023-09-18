@@ -312,6 +312,11 @@ headingStyle1: {
   marginBottom: 10,
   marginTop: 0,
   marginLeft: 40,
-}
+},
+
+mainseite: {
+  flex: 1,
+  backgroundColor: 'black', // Hintergrundfarbe auf Schwarz setzen
+},
 
 });
