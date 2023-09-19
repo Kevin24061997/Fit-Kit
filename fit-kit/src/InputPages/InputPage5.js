@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, ScrollView, TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserData } from './UserDataContext'; // Importieren Sie den Context
 
 export function InputPage5() {
   const navigation = useNavigation();
+  const isFocused = useIsFocused(); // Nutzen Sie useIsFocused
   const { userData, setUserData } = useUserData(); // Verwenden Sie den UserDataContext
 
   function navigateToInputPage6() {
@@ -21,10 +22,10 @@ export function InputPage5() {
   }, []);
 
   useEffect(() => {
-    if (inputDone) {
-      navigateToInputPage6(); // Hier rufe ich die Funktion auf, um zur nächsten Seite zu navigieren
+    if (isFocused && inputDone) {
+      navigateToInputPage6(); // Hier wird zur nächsten Seite navigiert, wenn die Seite im Fokus ist
     }
-  }, [inputDone]);
+  }, [isFocused, inputDone]);
 
   const checkInputStatus = async () => {
     try {

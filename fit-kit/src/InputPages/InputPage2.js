@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, ScrollView, TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, Button, ScrollView, TextInput, Alert } from 'react-native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserData } from './UserDataContext'; // Importieren Sie den Context
 
 export function InputPage2() {
   const navigation = useNavigation();
   const { userData, setUserData } = useUserData(); // Verwenden Sie den UserDataContext
+  const isFocused = useIsFocused(); // Nutzen Sie useIsFocused
 
   function navigateToInputPage3() {
     navigation.navigate('InputPage3');
@@ -21,10 +22,10 @@ export function InputPage2() {
   }, []);
 
   useEffect(() => {
-    if (inputDone) {
-      navigateToInputPage3();
+    if (isFocused && inputDone) {
+      navigateToInputPage3(); // Hier wird zur nächsten Seite navigiert, wenn die Seite im Fokus ist
     }
-  }, [inputDone]);
+  }, [isFocused, inputDone]);
 
   const checkInputStatus = async () => {
     try {
@@ -55,6 +56,12 @@ export function InputPage2() {
   };
 
   const handleInputDone = async () => {
+    // Validierung sicherstellen, dass nur "Mann" oder "Frau" eingegeben werden kann
+    if (gender !== 'Mann' && gender !== 'Frau') {
+      Alert.alert('Ungültiges Geschlecht', 'Bitte geben Sie entweder "Mann" oder "Frau" ein.');
+      return;
+    }
+
     try {
       const updatedUserData = { ...userData, gender: gender }; // Aktualisieren Sie userData mit dem Geschlecht
       setUserData(updatedUserData); // Setzen Sie die aktualisierten Daten im Context
