@@ -40,21 +40,30 @@ export function InputPage7() {
   };
 
   const handleInputDone = async () => {
+    // Validieren Sie, ob howOften eine Zahl zwischen 1 und 7 ist
+    const parsedHowOften = parseInt(howOften, 10);
+    if (isNaN(parsedHowOften) || parsedHowOften < 1 || parsedHowOften > 7) {
+      console.error('Ungültige Eingabe für "Wie oft können Sie in der Woche trainieren?"');
+      // Zeigen Sie dem Benutzer eine Fehlermeldung an, wenn die Eingabe ungültig ist
+      return;
+    }
+  
     try {
       // Speichern Sie Trainingsinformationen im Context
       setUserTraining({
         ...userTraining,
-        howOften,
+        howOften: parsedHowOften.toString(), // In String konvertieren und speichern
       });
-
+  
       await AsyncStorage.setItem('inputStatusPage7', 'done');
-      await AsyncStorage.setItem('howOften', howOften);
-
+      await AsyncStorage.setItem('howOften', parsedHowOften.toString()); // In String konvertieren und speichern
+  
       setInputDone(true);
     } catch (error) {
       console.error('Fehler beim Speichern des Eingabestatus:', error);
     }
   };
+  
 
   return (
     <ScrollView contentContainerStyle={styles.inputContainer}>

@@ -319,4 +319,12 @@ mainseite: {
   backgroundColor: 'black', // Hintergrundfarbe auf Schwarz setzen
 },
 
+infoTagBilder: {
+  height: 150,
+  width: 140,
+  margin: 9,
+  marginTop: 20,
+  borderRadius: 10
+},
+
 });

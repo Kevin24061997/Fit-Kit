@@ -1,29 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './styles';
+import { bilderTag } from './function/Bildertag';
+import { useUserData } from './InputPages/UserDataContext';
 
 export const Page = () => {
   const navigation = useNavigation();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [startOfWeek, setStartOfWeek] = useState(new Date());
-  const [inputDone, setInputDone] = useState(false);
-
-  useEffect(() => {
-    checkInputStatus();
-  }, []);
-
-  const checkInputStatus = async () => {
-    try {
-      const inputStatus = await AsyncStorage.getItem('inputStatusPage2'); // Hier die letzte Input-Seite angeben
-      if (inputStatus === 'done') {
-        setInputDone(true);
-      }
-    } catch (error) {
-      console.error('Fehler beim Überprüfen des Eingabestatus:', error);
-    }
-  };
+  
 
   useEffect(() => {
     // Ermitteln Sie den aktuellen Tag der Woche (0 = Sonntag, 1 = Montag, ...)
@@ -54,6 +41,20 @@ export const Page = () => {
     navigation.navigate('Einstellung');
   }
 
+
+  const { userTraining } = useUserData();
+
+  // Überprüfen Sie, ob howOften im userTraining vorhanden ist und eine gültige Zahl ist
+  if (!userTraining || !userTraining.howOften || isNaN(userTraining.howOften)) {
+    return null; // Zeigen Sie nichts an, wenn die Eingabe ungültig ist
+  }
+
+  const howOften = parseInt(userTraining.howOften, 10); // howOften in eine Ganzzahl konvertieren
+
+  // Erstellen Sie eine Array mit der Anzahl von Containern basierend auf howOften
+  const containerArray = Array.from({ length: howOften }, (_, index) => index);
+
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -79,21 +80,15 @@ export const Page = () => {
       </View>
 
       <ScrollView style={styles.infoBlockContainer}>
-        <TouchableOpacity onPress={navigateToInfoBlockScreen}>
+      {containerArray.map((_, index) => (
+        <TouchableOpacity key={index} onPress={navigateToInfoBlockScreen}>
           <View style={styles.infoBlock}>
-            <Text style={styles.infoText}>Info 1</Text>
-          </View>
-          <View style={styles.infoBlock}>
-            <Text style={styles.infoText}>Info 2</Text>
-          </View>
-          <View style={styles.infoBlock}>
-            <Text style={styles.infoText}>Info 3</Text>
+            <Image source={bilderTag.image1} style={styles.infoTagBilder} />
+            <Image source={bilderTag.image2} style={styles.infoTagBilder} />
           </View>
         </TouchableOpacity>
-
-        {/* Weitere Info-Blöcke mit TouchableOpacity */}
-
-      </ScrollView>
+      ))}
+    </ScrollView>
 
       <View style={styles.sectionContainer}>
         <TouchableOpacity onPress={navigateToInfoEinstellungScreen}>
