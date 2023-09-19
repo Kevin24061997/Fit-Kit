@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, ScrollView, TextInput } from 'react-native';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useUserData } from './UserDataContext'; // Importieren Sie den Context
+import { useUserData } from './UserDataContext';
+
+import { styles } from '../style.js/Inputstyle';
 
 export function InputPage9() {
   const navigation = useNavigation();
@@ -65,16 +67,22 @@ export function InputPage9() {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <ScrollView contentContainerStyle={styles.inputContainer}>
       {!inputDone ? (
         <View>
-          <Text>Welches Trainingsziel verfolgen Sie?</Text>
+          <Text style={styles.inputText}>Welches Trainingsziel verfolgen Sie?</Text>
           <TextInput
+            style={styles.inputField}
             value={goal}
             onChangeText={(text) => setGoal(text)}
             placeholder="Trainingsziel (Hautstraffung, Fettverlust, Muskelaufbau)"
+            placeholderTextColor="white"
           />
-          <Button title="Eingabe beenden" onPress={handleInputDone} />
+          <Button
+            title="Eingabe beenden"
+            onPress={handleInputDone}
+            style={styles.button}
+          />
         </View>
       ) : null}
     </ScrollView>

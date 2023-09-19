@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, ScrollView, TextInput } from 'react-native';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useUserData } from './UserDataContext'; // Importieren Sie den Context
+import { useUserData } from './UserDataContext'; 
+
+import { styles } from '../style.js/Inputstyle';
 
 export function InputPage1() {
   const navigation = useNavigation();
@@ -66,20 +68,31 @@ export function InputPage1() {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <ScrollView contentContainerStyle={styles.inputContainer}>
       {inputDone ? (
-        <Text>Die Eingabe wurde bereits gemacht.</Text>
+        <Text style={styles.inputText}>
+          Die Eingabe wurde bereits gemacht.
+        </Text>
       ) : (
         <View>
-          <Text>Geben Sie Ihren Namen ein:</Text>
+          <Text style={styles.inputText}>
+            Geben Sie Ihren Namen ein:
+          </Text>
           <TextInput
+            style={styles.inputField}
             value={name}
             onChangeText={(text) => setName(text)}
             placeholder="Name"
+            placeholderTextColor="white"
           />
-          <Button title="Eingabe beenden" onPress={handleInputDone} />
+          <Button
+            title="Eingabe beenden"
+            onPress={handleInputDone}
+            style={styles.button}
+          />
         </View>
       )}
     </ScrollView>
+
   );
 }

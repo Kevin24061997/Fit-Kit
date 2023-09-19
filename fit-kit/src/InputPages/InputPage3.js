@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, ScrollView, TextInput } from 'react-native';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useUserData } from './UserDataContext'; // Importieren Sie den Context
+import { useUserData } from './UserDataContext';
+
+import { styles } from '../style.js/Inputstyle';
 
 export function InputPage3() {
   const navigation = useNavigation();
@@ -67,19 +69,25 @@ export function InputPage3() {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {!inputDone ? (
-        <View>
-          <Text>Geben Sie Ihr Gewicht ein:</Text>
-          <TextInput
-            value={weight}
-            onChangeText={(text) => setWeight(text)}
-            placeholder="Gewicht"
-            keyboardType="numeric"
-          />
-          <Button title="Eingabe beenden" onPress={handleInputDone} />
-        </View>
-      ) : null}
-    </ScrollView>
+    <ScrollView contentContainerStyle={styles.inputContainer}>
+    {!inputDone ? (
+      <View>
+        <Text style={styles.inputText}>Geben Sie Ihr Gewicht ein:</Text>
+        <TextInput
+          style={styles.inputField}
+          value={weight}
+          onChangeText={(text) => setWeight(text)}
+          placeholder="Gewicht"
+          keyboardType="numeric"
+          placeholderTextColor="white"
+        />
+        <Button
+          title="Eingabe beenden"
+          onPress={handleInputDone}
+          style={styles.button}
+        />
+      </View>
+    ) : null}
+  </ScrollView>
   );
 }

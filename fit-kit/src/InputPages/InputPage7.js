@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, ScrollView, TextInput } from 'react-native';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useUserData } from './UserDataContext'; // Importieren Sie den Context
+import { useUserData } from './UserDataContext';
+
+import { styles } from '../style.js/Inputstyle';
 
 export function InputPage7() {
   const navigation = useNavigation();
@@ -12,7 +14,7 @@ export function InputPage7() {
   function navigateToInputPage8() {
     navigation.navigate('InputPage8');
   }
-  
+
   const [inputDone, setInputDone] = useState(false);
   const [howOften, setHowOften] = useState('');
 
@@ -55,17 +57,23 @@ export function InputPage7() {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <ScrollView contentContainerStyle={styles.inputContainer}>
       {!inputDone ? (
         <View>
-          <Text>Wie oft können Sie in der Woche trainieren?</Text>
+          <Text style={styles.inputText}>Wie oft können Sie in der Woche trainieren?</Text>
           <TextInput
+            style={styles.inputField}
             value={howOften}
             onChangeText={(text) => setHowOften(text)}
             placeholder="Häufigkeit pro Woche"
             keyboardType="numeric"
+            placeholderTextColor="white"
           />
-          <Button title="Eingabe beenden" onPress={handleInputDone} />
+          <Button
+            title="Eingabe beenden"
+            onPress={handleInputDone}
+            style={styles.button}
+          />
         </View>
       ) : null}
     </ScrollView>

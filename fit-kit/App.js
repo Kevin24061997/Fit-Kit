@@ -71,7 +71,7 @@ export function App() {
                 backgroundColor: 'black',
               },
               headerTitleStyle: {
-                color: 'white', 
+                color: 'black', 
               },
             }}
             />  
@@ -79,7 +79,7 @@ export function App() {
               headerStyle: {
                 backgroundColor: 'black',
               },headerTitleStyle: {
-                color: 'white', 
+                color: 'black', 
               },
             }}  />
             <Stack.Screen
@@ -89,7 +89,7 @@ export function App() {
                 headerStyle: {
                   backgroundColor: 'black',
                 },headerTitleStyle: {
-                  color: 'white', 
+                  color: 'black', 
                 },
               }}/>
             <Stack.Screen
@@ -99,7 +99,7 @@ export function App() {
                 headerStyle: {
                   backgroundColor: 'black',
                 },headerTitleStyle: {
-                  color: 'white', 
+                  color: 'black', 
                 },
               }}/>
             <Stack.Screen
@@ -109,7 +109,7 @@ export function App() {
                 headerStyle: {
                   backgroundColor: 'black',
                 },headerTitleStyle: {
-                  color: 'white', 
+                  color: 'black', 
                 },
               }}/>
             <Stack.Screen
@@ -119,7 +119,7 @@ export function App() {
                 headerStyle: {
                   backgroundColor: 'black',
                 },headerTitleStyle: {
-                  color: 'white', 
+                  color: 'black', 
                 },
               }}/>
             <Stack.Screen
@@ -129,7 +129,7 @@ export function App() {
                 headerStyle: {
                   backgroundColor: 'black',
                 },headerTitleStyle: {
-                  color: 'white', 
+                  color: 'black', 
                 },
               }}/>
             <Stack.Screen
@@ -139,7 +139,7 @@ export function App() {
                 headerStyle: {
                   backgroundColor: 'black',
                 },headerTitleStyle: {
-                  color: 'white', 
+                  color: 'black', 
                 },
               }}/> 
             <Stack.Screen
@@ -149,7 +149,7 @@ export function App() {
                 headerStyle: {
                   backgroundColor: 'black',
                 },headerTitleStyle: {
-                  color: 'white', 
+                  color: 'black', 
                 },
               }}/> 
             <Stack.Screen
@@ -159,7 +159,7 @@ export function App() {
                 headerStyle: {
                   backgroundColor: 'black',
                 },headerTitleStyle: {
-                  color: 'white', 
+                  color: 'black', 
                 },
               }}/>             
             <Stack.Screen

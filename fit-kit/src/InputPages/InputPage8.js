@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, ScrollView, TextInput } from 'react-native';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useUserData } from './UserDataContext'; // Importieren Sie den Context
+import { useUserData } from './UserDataContext';
+
+import { styles } from '../style.js/Inputstyle';
 
 export function InputPage8() {
   const navigation = useNavigation();
@@ -55,17 +57,23 @@ export function InputPage8() {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <ScrollView contentContainerStyle={styles.inputContainer}>
       {!inputDone ? (
         <View>
-          <Text>Wie lange können Sie pro Trainingseinheit trainieren?</Text>
+          <Text style={styles.inputText}>Wie lange können Sie pro Trainingseinheit trainieren?</Text>
           <TextInput
+            style={styles.inputField}
             value={howLong}
             onChangeText={(text) => setHowLong(text)}
             placeholder="Dauer pro Trainingseinheit (in Minuten)"
             keyboardType="numeric"
+            placeholderTextColor="white"
           />
-          <Button title="Eingabe beenden" onPress={handleInputDone} />
+          <Button
+            title="Eingabe beenden"
+            onPress={handleInputDone}
+            style={styles.button}
+          />
         </View>
       ) : null}
     </ScrollView>

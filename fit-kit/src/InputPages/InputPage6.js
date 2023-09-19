@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, ScrollView, TextInput } from 'react-native';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useUserData } from './UserDataContext'; // Importieren Sie den Context
+import { useUserData } from './UserDataContext';
+
+import { styles } from '../style.js/Inputstyle';
 
 export function InputPage6() {
   const navigation = useNavigation();
@@ -90,31 +92,41 @@ export function InputPage6() {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <ScrollView contentContainerStyle={styles.inputContainer}>
       {!inputDone ? (
         <View>
-          <Text>Nackenumfang (in cm):</Text>
+          <Text style={styles.inputText}>Nackenumfang (in cm):</Text>
           <TextInput
+            style={styles.inputField}
             value={neck}
             onChangeText={(text) => setNeck(text)}
             placeholder="Nackenumfang"
             keyboardType="numeric"
+            placeholderTextColor="white"
           />
-          <Text>Taillenumfang (in cm):</Text>
+          <Text style={styles.inputText}>Taillenumfang (in cm):</Text>
           <TextInput
+            style={styles.inputField}
             value={waist}
             onChangeText={(text) => setWaist(text)}
             placeholder="Taillenumfang"
             keyboardType="numeric"
+            placeholderTextColor="white"
           />
-          <Text>Hüftumfang (in cm):</Text>
+          <Text style={styles.inputText}>Hüftumfang (in cm):</Text>
           <TextInput
+            style={styles.inputField}
             value={hip}
             onChangeText={(text) => setHip(text)}
             placeholder="Hüftumfang"
             keyboardType="numeric"
+            placeholderTextColor="white"
           />
-          <Button title="Eingabe beenden" onPress={handleInputDone} />
+          <Button
+            title="Eingabe beenden"
+            onPress={handleInputDone}
+            style={styles.button}
+          />
         </View>
       ) : null}
     </ScrollView>
