@@ -3,8 +3,32 @@ import { View, Text, TextInput, Button, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserData } from './InputPages/UserDataContext';
 
+
+
 export function EinstellungScreen() {
-  const { userData, setUserData } = useUserData();
+  const { userData, setUserData, userTraining } = useUserData();
+   // Zustandsvariablen für die Anzeige der Trainingsinformationen hinzugefügt
+   const [howOften, setHowOften] = useState('');
+   const [howLong, setHowLong] = useState('');
+   const [goal, setGoal] = useState('');
+ 
+   // useEffect hinzugefügt, um die Trainingsdaten beim Laden der Seite zu laden
+   useEffect(() => {
+     loadTrainingData();
+   }, []);
+ 
+   // Funktion zum Laden der Trainingsdaten hinzugefügt
+   const loadTrainingData = async () => {
+     try {
+       // Laden Sie die Trainingsdaten aus userTraining
+       setHowOften(userTraining.howOften || '');
+       setHowLong(userTraining.howLong || '');
+       setGoal(userTraining.goal || '');
+     } catch (error) {
+       console.error('Fehler beim Laden der Trainingsdaten:', error);
+     }
+   };
+
   
   const [gender, setGender] = useState(userData.gender || '');
   const [weight, setWeight] = useState(userData.weight || '');
@@ -269,6 +293,28 @@ export function EinstellungScreen() {
         placeholder="3000"
         keyboardType="numeric"
       />
+      
+      <Text>Trainingshäufigkeit:</Text>
+      <TextInput
+        value={howOften}
+        onChangeText={(text) => setHowOften(text)}
+        placeholder="3"
+        keyboardType="numeric"
+      />
+      <Text>Trainingsdauer(in Minuten)</Text>
+      <TextInput
+        value={howLong}
+        onChangeText={(text) => setHowLong(text)}
+        placeholder="120"
+        keyboardType="numeric"
+      />
+      <Text>Trainingsziel:</Text>
+      <TextInput
+        value={goal}
+        onChangeText={(text) => setGoal(text)}
+        placeholder="Trainingsziel (Hautstraffung, Fettverlust, Muskelaufbau)"
+      />
+
       <Button title="Berechnen" onPress={() => {
         if (gender === 'Mann' || gender === 'frau') {
           estimateBodyFatPercentage();
@@ -341,6 +387,7 @@ export function EinstellungScreen() {
           <Text>{totalCaloriesBurned}</Text>
         </View>
       )}
+      
     </ScrollView>
   );
 }
