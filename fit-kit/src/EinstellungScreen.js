@@ -51,6 +51,7 @@ export function EinstellungScreen() {
   useEffect(() => {
     // Beim Laden der App die zuvor gespeicherten Daten aus AsyncStorage abrufen
     loadUserData();
+    console.log()
   }, []);
 
   const saveUserData = async () => {
