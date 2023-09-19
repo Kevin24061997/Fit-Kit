@@ -178,7 +178,13 @@ export function App() {
               },
             }}
             />
-            <Stack.Screen name="Einstellung" component={EinstellungScreen} />
+            <Stack.Screen name="Einstellung" component={EinstellungScreen} options={{
+                headerStyle: {
+                  backgroundColor: 'black',
+                },headerTitleStyle: {
+                  color: 'white', 
+                },
+              }}/>
           </Stack.Navigator>
         </NavigationContainer>
       </UserDataProvider>

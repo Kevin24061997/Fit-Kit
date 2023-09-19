@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, ScrollView } from 'react-native';
+import { View, Text, TextInput, Button, ScrollView , StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserData } from './InputPages/UserDataContext';
 
 
 
 export function EinstellungScreen() {
-  const { userData, setUserData, userTraining } = useUserData();
+  const { userData, setUserData, userTraining, setUserTraining } = useUserData();
    // Zustandsvariablen für die Anzeige der Trainingsinformationen hinzugefügt
    const [howOften, setHowOften] = useState('');
    const [howLong, setHowLong] = useState('');
@@ -15,6 +15,7 @@ export function EinstellungScreen() {
    // useEffect hinzugefügt, um die Trainingsdaten beim Laden der Seite zu laden
    useEffect(() => {
      loadTrainingData();
+     loadUserData();
    }, []);
  
    // Funktion zum Laden der Trainingsdaten hinzugefügt
@@ -50,9 +51,19 @@ export function EinstellungScreen() {
 
   useEffect(() => {
     // Beim Laden der App die zuvor gespeicherten Daten aus AsyncStorage abrufen
-    loadUserData();
-    console.log()
-  }, []);
+    estimateBodyFatPercentage();
+    calculateBMI();
+    calculateLeanMass();
+    calculateFFMI();
+    calculateBMR();
+    calculateTotalEnergyExpenditure();
+    estimateMuscleMass();
+    estimateBodyWaterPercentage();
+    calculateCaloriesBurned();
+    saveUserData();
+    saveUserTrainingData();
+    
+  }, [gender, weight, height, age, neck, waist, hip, bmi, bodyFatPercentage, muscleMass, bodyWaterPercentage, ffmi, bmr, totalEnergyExpenditure, caloriesPerStep, totalCaloriesBurned, steps, howOften, howLong, goal,]);
 
   const saveUserData = async () => {
     try {
@@ -82,6 +93,24 @@ export function EinstellungScreen() {
       setUserData(updatedUserData); // Aktualisieren Sie den Context
     } catch (error) {
       console.error('Fehler beim Speichern der Daten:', error);
+    }
+  };
+
+  const saveUserTrainingData = async () => {
+    try {
+      // Erstellen Sie ein Objekt mit den relevanten Trainingsdaten
+      const userTrainingData = {
+        ...userTraining,
+        howOften,
+        howLong,
+        goal,
+      };
+  
+      // Speichern Sie userTrainingData in AsyncStorage
+      await AsyncStorage.setItem('userTraining', JSON.stringify(userTrainingData));
+      setUserTraining(userTrainingData);
+    } catch (error) {
+      console.error('Fehler beim Speichern der Trainingsdaten:', error);
     }
   };
 
@@ -238,157 +267,197 @@ export function EinstellungScreen() {
   
 
   return (
-    <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Geschlecht:</Text>
-      <TextInput
-        value={gender}
-        onChangeText={(text) => setGender(text)}
-        placeholder="Geschlecht (Mann/frau)"
-      />
-      <Text>Gewicht (in kg):</Text>
-      <TextInput
-        value={weight}
-        onChangeText={(text) => setWeight(text)}
-        placeholder="Gewicht"
-        keyboardType="numeric"
-      />
-      <Text>Körpergröße (in cm):</Text>
-      <TextInput
-        value={height}
-        onChangeText={(text) => setHeight(text)}
-        placeholder="Körpergröße"
-        keyboardType="numeric"
-      />
-      <Text>Alter:</Text>
-      <TextInput
-        value={age}
-        onChangeText={(text) => setAge(text)}
-        placeholder="Alter"
-        keyboardType="numeric"
-      />
-      <Text>Nackenumfang (in cm):</Text>
-      <TextInput
-        value={neck}
-        onChangeText={(text) => setNeck(text)}
-        placeholder="Nackenumfang"
-        keyboardType="numeric"
-      />
-      <Text>Taillenumfang (in cm):</Text>
-      <TextInput
-        value={waist}
-        onChangeText={(text) => setWaist(text)}
-        placeholder="Taillenumfang"
-        keyboardType="numeric"
-      />
-      <Text>Hüftumfang (in cm):</Text>
-      <TextInput
-        value={hip}
-        onChangeText={(text) => setHip(text)}
-        placeholder="Hüftumfang"
-        keyboardType="numeric"
-      />
-      <Text>Wie viele Schritte heute:</Text>
-      <TextInput
-        value={steps}
-        onChangeText={(text) =>  setSteps(text)}
-        placeholder="3000"
-        keyboardType="numeric"
-      />
-      
-      <Text>Trainingshäufigkeit:</Text>
-      <TextInput
-        value={howOften}
-        onChangeText={(text) => setHowOften(text)}
-        placeholder="3"
-        keyboardType="numeric"
-      />
-      <Text>Trainingsdauer(in Minuten)</Text>
-      <TextInput
-        value={howLong}
-        onChangeText={(text) => setHowLong(text)}
-        placeholder="120"
-        keyboardType="numeric"
-      />
-      <Text>Trainingsziel:</Text>
-      <TextInput
-        value={goal}
-        onChangeText={(text) => setGoal(text)}
-        placeholder="Trainingsziel (Hautstraffung, Fettverlust, Muskelaufbau)"
-      />
-
-      <Button title="Berechnen" onPress={() => {
-        if (gender === 'Mann' || gender === 'frau') {
-          estimateBodyFatPercentage();
-          calculateBMI();
-          calculateLeanMass();
-          calculateFFMI();
-          calculateBMR();
-          calculateTotalEnergyExpenditure();
-          estimateMuscleMass();
-          estimateBodyWaterPercentage();
-          calculateCaloriesBurned();
-          saveUserData();
-        } else {
-          console.error('Ungültiges Geschlecht angegeben.');
-        }
-      }} />
-
-      {bmi !== null && (
-        <View>
-          <Text>BMI:</Text>
-          <Text>{bmi}</Text>
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.container}>
+        <View style={styles.column}>
+          <Text style={styles.textWhite}>Geschlecht:</Text>
+          <TextInput
+            value={gender}
+            onChangeText={(text) => setGender(text)}
+            placeholder="Geschlecht (Mann/frau)"
+            style={styles.input}
+          />
         </View>
-      )}
-
-      {bodyFatPercentage !== null && (
-        <View>
-          <Text>Geschätzter Körperfettanteil (%):</Text>
-          <Text>{bodyFatPercentage}</Text>
+        <View style={styles.column}>
+          <Text style={styles.textWhite}>Gewicht (in kg):</Text>
+          <TextInput
+            value={weight}
+            onChangeText={(text) => setWeight(text)}
+            placeholder="Gewicht"
+            keyboardType="numeric"
+            style={styles.input}
+          />
         </View>
-      )}
-
-      {muscleMass !== null && (
-        <View>
-          <Text>Geschätzte Fettfreie Masse (kg):</Text>
-          <Text>{muscleMass}</Text>
+        <View style={styles.column}>
+          <Text style={styles.textWhite}>Körpergröße (in cm):</Text>
+          <TextInput
+            value={height}
+            onChangeText={(text) => setHeight(text)}
+            placeholder="Körpergröße"
+            keyboardType="numeric"
+            style={styles.input}
+          />
         </View>
-      )}
-
-      {bodyWaterPercentage !== null && (
-        <View>
-          <Text>Geschätzter Körperwasseranteil (%):</Text>
-          <Text>{bodyWaterPercentage}</Text>
+        <View style={styles.column}>
+          <Text style={styles.textWhite}>Alter:</Text>
+          <TextInput
+            value={age}
+            onChangeText={(text) => setAge(text)}
+            placeholder="Alter"
+            keyboardType="numeric"
+            style={styles.input}
+          />
         </View>
-      )}
-
-      {ffmi !== null && (
-        <View>
-          <Text>FFMI:</Text>
-          <Text>{ffmi}</Text>
+        <View style={styles.column}>
+          <Text style={styles.textWhite}>Nackenumfang (in cm):</Text>
+          <TextInput
+            value={neck}
+            onChangeText={(text) => setNeck(text)}
+            placeholder="Nackenumfang"
+            keyboardType="numeric"
+            style={styles.input}
+          />
         </View>
-      )}
-
-      {bmr !== null && (
-        <View>
-          <Text>BMR:</Text>
-          <Text>{bmr}</Text>
+        <View style={styles.column}>
+          <Text style={styles.textWhite}>Taillenumfang (in cm):</Text>
+          <TextInput
+            value={waist}
+            onChangeText={(text) => setWaist(text)}
+            placeholder="Taillenumfang"
+            keyboardType="numeric"
+            style={styles.input}
+          />
         </View>
-      )}
-
-      {totalEnergyExpenditure !== null && (
-        <View>
-          <Text>Gesamter Energieverbrauch:</Text>
-          <Text>{totalEnergyExpenditure}</Text>
+        <View style={styles.column}>
+          <Text style={styles.textWhite}>Hüftumfang (in cm):</Text>
+          <TextInput
+            value={hip}
+            onChangeText={(text) => setHip(text)}
+            placeholder="Hüftumfang"
+            keyboardType="numeric"
+            style={styles.input}
+          />
         </View>
-      )}
-
-      {totalCaloriesBurned !== null && (
-        <View>
-          <Text>Kalorien Schritte:</Text>
-          <Text>{totalCaloriesBurned}</Text>
+        <View style={styles.column}>
+          <Text style={styles.textWhite}>Wie viele Schritte heute:</Text>
+          <TextInput
+            value={steps}
+            onChangeText={(text) => setSteps(text)}
+            placeholder="3000"
+            keyboardType="numeric"
+            style={styles.input}
+          />
         </View>
-      )}
-      
+        <View style={styles.column}>
+          <Text style={styles.textWhite}>Trainingshäufigkeit:</Text>
+          <TextInput
+            value={howOften}
+            onChangeText={(text) => setHowOften(text)}
+            placeholder="3"
+            keyboardType="numeric"
+            style={styles.input}
+          />
+        </View>
+        <View style={styles.column}>
+          <Text style={styles.textWhite}>Trainingsdauer (in Minuten):</Text>
+          <TextInput
+            value={howLong}
+            onChangeText={(text) => setHowLong(text)}
+            placeholder="120"
+            keyboardType="numeric"
+            style={styles.input}
+          />
+        </View>
+        <View style={styles.column}>
+          <Text style={styles.textWhite}>Trainingsziel:</Text>
+          <TextInput
+            value={goal}
+            onChangeText={(text) => setGoal(text)}
+            placeholder="Trainingsziel (Hautstraffung, Fettverlust, Muskelaufbau)"
+            style={styles.input}
+          />
+        </View>
+        {bmi !== null && (
+          <View style={styles.column}>
+            <Text style={styles.textWhite}>BMI:</Text>
+            <Text style={styles.input}>{bmi}</Text>
+          </View>
+        )}
+        {bodyFatPercentage !== null && (
+          <View style={styles.column}>
+            <Text style={styles.textWhite}>Geschätzter Körperfettanteil (%):</Text>
+            <Text style={styles.input}>{bodyFatPercentage}</Text>
+          </View>
+        )}
+        {muscleMass !== null && (
+          <View style={styles.column}>
+            <Text style={styles.textWhite}>Geschätzte Fettfreie Masse (kg):</Text>
+            <Text style={styles.input}>{muscleMass}</Text>
+          </View>
+        )}
+        {bodyWaterPercentage !== null && (
+          <View style={styles.column}>
+            <Text style={styles.textWhite}>Geschätzter Körperwasseranteil (%):</Text>
+            <Text style={styles.input}>{bodyWaterPercentage}</Text>
+          </View>
+        )}
+        {ffmi !== null && (
+          <View style={styles.column}>
+            <Text style={styles.textWhite}>FFMI:</Text>
+            <Text style={styles.input}>{ffmi}</Text>
+          </View>
+        )}
+        {bmr !== null && (
+          <View style={styles.column}>
+            <Text style={styles.textWhite}>BMR:</Text>
+            <Text style={styles.input}>{bmr}</Text>
+          </View>
+        )}
+        {totalEnergyExpenditure !== null && (
+          <View style={styles.column}>
+            <Text style={styles.textWhite}>Gesamter Energieverbrauch:</Text>
+            <Text style={styles.input}>{totalEnergyExpenditure}</Text>
+          </View>
+        )}
+        {totalCaloriesBurned !== null && (
+          <View style={styles.column}>
+            <Text style={styles.textWhite}>Kalorien Schritte:</Text>
+            <Text style={styles.input}>{totalCaloriesBurned}</Text>
+          </View>
+        )}
+      </View>
     </ScrollView>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  scrollView: {
+    backgroundColor: 'black', // Hintergrundfarbe der ScrollView
+  },
+
+  container: {
+    backgroundColor: 'black',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: 10,
+    justifyContent: 'space-between',
+  },
+  column: {
+    padding: 10,
+    height: 80,
+    width: 165,
+    backgroundColor: 'darkblue', // Container-Farbe dunkelblau
+    borderRadius: 10, // Abgerundete Ecken
+    margin: 5, // Abstand zwischen den Containern
+    alignItems: 'center',
+  },
+  textWhite: {
+    color: 'white',
+    fontSize: 20,
+  },
+  input: {
+    color: 'gray',
+    fontSize: 22,
+    fontWeight: 'bold',
+  }
+});
