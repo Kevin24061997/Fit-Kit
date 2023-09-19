@@ -17,6 +17,9 @@ import {InputPage3} from './src/InputPages/InputPage3';
 import {InputPage4} from './src/InputPages/InputPage4';
 import {InputPage5} from './src/InputPages/InputPage5';
 import {InputPage6} from './src/InputPages/InputPage6';
+import {InputPage7} from './src/InputPages/InputPage7';
+import {InputPage8} from './src/InputPages/InputPage8';
+import {InputPage9} from './src/InputPages/InputPage9';
 
 
 const clearAsyncStorage = async () => {
@@ -128,7 +131,37 @@ export function App() {
                 },headerTitleStyle: {
                   color: 'white', 
                 },
-              }}/>        
+              }}/>
+            <Stack.Screen
+              name="InputPage7"
+              component={InputPage7}
+              options={{
+                headerStyle: {
+                  backgroundColor: 'black',
+                },headerTitleStyle: {
+                  color: 'white', 
+                },
+              }}/> 
+            <Stack.Screen
+              name="InputPage8"
+              component={InputPage8}
+              options={{
+                headerStyle: {
+                  backgroundColor: 'black',
+                },headerTitleStyle: {
+                  color: 'white', 
+                },
+              }}/> 
+            <Stack.Screen
+              name="InputPage9"
+              component={InputPage9}
+              options={{
+                headerStyle: {
+                  backgroundColor: 'black',
+                },headerTitleStyle: {
+                  color: 'white', 
+                },
+              }}/>             
             <Stack.Screen
               name="Timer"
               component={TimerHeader}

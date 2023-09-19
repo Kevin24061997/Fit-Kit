@@ -9,8 +9,8 @@ export function InputPage6() {
   const isFocused = useIsFocused();
   const { userData, setUserData } = useUserData(); // Verwenden Sie den UserDataContext
 
-  function navigateToPage() {
-    navigation.navigate('Training');
+  function navigateToInputPage7() {
+    navigation.navigate('InputPage7');
   }
 
   const [neck, setNeck] = useState('');
@@ -26,7 +26,7 @@ export function InputPage6() {
 
   useEffect(() => {
     if (isFocused && inputDone) {
-      navigateToPage();
+      navigateToInputPage7();
     }
   }, [isFocused, inputDone]);
 

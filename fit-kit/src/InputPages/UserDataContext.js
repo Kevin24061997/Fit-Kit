@@ -25,8 +25,14 @@ export const UserDataProvider = ({ children }) => {
     steps: '',
   });
 
+  const [userTraining, setUserTraining] = useState({
+    howOften: '',
+    howLong: '',
+    goal: '',
+  });
+
   return (
-    <UserDataContext.Provider value={{ userData, setUserData }}>
+    <UserDataContext.Provider value={{ userData, setUserData, userTraining, setUserTraining }}>
       {children}
     </UserDataContext.Provider>
   );
