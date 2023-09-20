@@ -21,12 +21,21 @@ export const styles = StyleSheet.create({
     margin: 5,
     alignItems: 'center',
   },
+  columnrechnung: {
+    padding: 10,
+    height: 80,
+    width: 165,
+    backgroundColor: 'dimgray',
+    borderRadius: 10,
+    margin: 5,
+    alignItems: 'center',
+  },
   textWhite: {
     color: 'white',
     fontSize: 20,
   },
   input: {
-    color: 'gray',
+    color: 'silver',
     fontSize: 22,
     fontWeight: 'bold',
   }

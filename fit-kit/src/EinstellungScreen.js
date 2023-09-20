@@ -379,49 +379,49 @@ export function EinstellungScreen() {
           />
         </View>
         {bmi !== null && (
-          <View style={styles.column}>
+          <View style={styles.columnrechnung}>
             <Text style={styles.textWhite}>BMI:</Text>
             <Text style={styles.input}>{bmi}</Text>
           </View>
         )}
         {bodyFatPercentage !== null && (
-          <View style={styles.column}>
+          <View style={styles.columnrechnung}>
             <Text style={styles.textWhite}>Geschätzter Körperfettanteil (%):</Text>
             <Text style={styles.input}>{bodyFatPercentage}</Text>
           </View>
         )}
         {muscleMass !== null && (
-          <View style={styles.column}>
+          <View style={styles.columnrechnung}>
             <Text style={styles.textWhite}>Geschätzte Fettfreie Masse (kg):</Text>
             <Text style={styles.input}>{muscleMass}</Text>
           </View>
         )}
         {bodyWaterPercentage !== null && (
-          <View style={styles.column}>
+          <View style={styles.columnrechnung}>
             <Text style={styles.textWhite}>Geschätzter Körperwasseranteil (%):</Text>
             <Text style={styles.input}>{bodyWaterPercentage}</Text>
           </View>
         )}
         {ffmi !== null && (
-          <View style={styles.column}>
+          <View style={styles.columnrechnung}>
             <Text style={styles.textWhite}>FFMI:</Text>
             <Text style={styles.input}>{ffmi}</Text>
           </View>
         )}
         {bmr !== null && (
-          <View style={styles.column}>
+          <View style={styles.columnrechnung}>
             <Text style={styles.textWhite}>BMR:</Text>
             <Text style={styles.input}>{bmr}</Text>
           </View>
         )}
         {totalEnergyExpenditure !== null && (
-          <View style={styles.column}>
+          <View style={styles.columnrechnung}>
             <Text style={styles.textWhite}>Gesamter Energieverbrauch:</Text>
             <Text style={styles.input}>{totalEnergyExpenditure}</Text>
           </View>
         )}
         {totalCaloriesBurned !== null && (
-          <View style={styles.column}>
+          <View style={styles.columnrechnung}>
             <Text style={styles.textWhite}>Kalorien Schritte:</Text>
             <Text style={styles.input}>{totalCaloriesBurned}</Text>
           </View>
