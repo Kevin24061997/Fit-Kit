@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, ScrollView , StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserData } from './InputPages/UserDataContext';
+import { styles } from './style.js/Einstellungstyle';
 
 
 
@@ -430,34 +431,3 @@ export function EinstellungScreen() {
   );
 };
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: 'black', // Hintergrundfarbe der ScrollView
-  },
-
-  container: {
-    backgroundColor: 'black',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    padding: 10,
-    justifyContent: 'space-between',
-  },
-  column: {
-    padding: 10,
-    height: 80,
-    width: 165,
-    backgroundColor: 'darkblue', // Container-Farbe dunkelblau
-    borderRadius: 10, // Abgerundete Ecken
-    margin: 5, // Abstand zwischen den Containern
-    alignItems: 'center',
-  },
-  textWhite: {
-    color: 'white',
-    fontSize: 20,
-  },
-  input: {
-    color: 'gray',
-    fontSize: 22,
-    fontWeight: 'bold',
-  }
-});
