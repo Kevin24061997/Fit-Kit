@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, Modal } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserData } from './InputPages/UserDataContext';
 import { styles } from './style.js/Einstellungstyle';
@@ -265,6 +265,20 @@ export function EinstellungScreen() {
     setBodyWaterPercentage(bodyWaterPercentage.toFixed(2));
   };
 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const showModal = () => {
+    setModalVisible(true);
+  };
+  const handleTrainingGoalSelection = (selectedGoal) => {
+    setGoal(selectedGoal);
+    setModalVisible(false);
+  };
+
+  const handleModalClose = () => {
+    setModalVisible(false);
+  };
+
   
 
   return (
@@ -369,15 +383,42 @@ export function EinstellungScreen() {
             style={styles.input}
           />
         </View>
-        <View style={styles.column}>
-          <Text style={styles.textWhite}>Trainingsziel:</Text>
-          <TextInput
-            value={goal}
-            onChangeText={(text) => setGoal(text)}
-            placeholder="Trainingsziel (Hautstraffung, Fettverlust, Muskelaufbau)"
-            style={styles.input}
-          />
-        </View>
+        <TouchableOpacity onPress={showModal}>
+          <View style={styles.column}>
+            <Text style={styles.textWhite}>Trainingsziel:</Text>
+            <Text style={styles.input}>{goal}</Text>
+          </View>
+        </TouchableOpacity>
+        <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={handleModalClose}>
+        <View style={[styles.modalContainer]}>
+          <View style={styles.modalContent}>
+            <Text style={[styles.modalText, { color: 'white' }]}>Trainingsziel auswählen:</Text>
+            <TouchableOpacity
+              onPress={() => handleTrainingGoalSelection('Hautstraffung')}
+              style={[styles.goalButton, { backgroundColor: 'darkblue' }]}
+            >
+              <Text style={[styles.buttonText1]}>Hautstraffung</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleTrainingGoalSelection('Fettverlust')}
+              style={[styles.goalButton, { backgroundColor: 'darkblue' }]}
+            >
+              <Text style={[styles.buttonText1]}>Fettverlust</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleTrainingGoalSelection('Muskelaufbau')}
+              style={[styles.goalButton, { backgroundColor: 'darkblue' }]}
+            >
+              <Text style={[styles.buttonText1]}>Muskelaufbau</Text>
+            </TouchableOpacity>
+          </View>
+          </View>
+        </Modal>
+
         {bmi !== null && (
           <View style={styles.columnrechnung}>
             <Text style={styles.textWhite}>BMI:</Text>
