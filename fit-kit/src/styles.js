@@ -276,6 +276,18 @@ modalText: {
   marginBottom: 20,
 },
 
+inputDescription: {
+  color: 'gray',
+  fontSize: 21,
+  fontWeight: 'bold',
+},
+
+input: {
+  color: 'silver',
+  fontSize: 21,
+  fontWeight: 'bold',
+},
+
 modalContent1: {
   width: 320,
   height: 500,
