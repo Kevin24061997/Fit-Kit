@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity, FlatList, Modal } from 'react-native';
+import { View, Text, ScrollView, Image, Button, TouchableOpacity, FlatList, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 // Stile und Funktionen importieren
@@ -12,12 +12,14 @@ import { InfoModal } from './Modal/InfoModal'; // Importieren Sie das Informatio
 import { Speichern } from './function/Speichern';
 import { initialImageContents } from './function/imageData';
 import { useRoute } from '@react-navigation/native';
+import GewichtUndWiederholungen from './GewichtUndWiederholungen';
 
 export function EinzelÜbungScreen() {
   const navigation = useNavigation();
 
   const route = useRoute();
   const [selectedImageIndex, setSelectedImageIndex] = useState(route.params.selectedImageIndex);
+  
 
     // Funktion zum Speichern der berechneten Daten
   const { saveImageContentsToStorage, loadImageContentsFromStorage } = Speichern();
@@ -126,8 +128,18 @@ export function EinzelÜbungScreen() {
 
   const handleImageSelect = (index) => {
     setSelectedImageIndex(index);
-    
+    if (!imageContents[index].modalVisible) {
+      // Öffnen Sie das Modal nur, wenn modalVisible auf false gesetzt ist
+      openModal(index);
+  
+      // Setzen Sie modalVisible auf true und speichern Sie die Änderungen in imageContents
+      const updatedImageContents = [...imageContents];
+      updatedImageContents[index].modalVisible = true;
+      setImageContents(updatedImageContents);
+      saveData(updatedImageContents); // Speichern Sie die Änderungen in Ihrem Speichermechanismus
+    }
   };
+
 
   // Wenn die Komponente geladen wird, versuche, die gespeicherten Daten zu laden
   useEffect(() => {
@@ -141,8 +153,36 @@ export function EinzelÜbungScreen() {
     loadStoredData();
   }, []);
 
+  useEffect(() => {
+    // Überprüfen Sie, ob modalVisible auf false gesetzt ist
+    if (!imageContents[selectedImageIndex].modalVisible) {
+      // Öffnen Sie das Modal nur, wenn modalVisible auf false gesetzt ist
+      openModal(selectedImageIndex);
+
+      // Setzen Sie modalVisible auf true und speichern Sie die Änderungen in imageContents
+      const updatedImageContents = [...imageContents];
+      updatedImageContents[selectedImageIndex].modalVisible = true;
+      setImageContents(updatedImageContents);
+      saveData(updatedImageContents);
+    }
+  }, [imageContents]);
+
+
+  const [modalVisiblef, setModalVisiblef] = useState(false);
+
+  const openModal = (index) => {
+    setSelectedImageIndex(index);
+    setModalVisiblef(true);
+  };
+
+  const closeModal = () => {
+    setModalVisiblef(false);
+  };
+
+
 
   return (
+
     <View style={styles.infoBlockContainer}>
       <ScrollView horizontal style={{ flexDirection: 'row' }}>
         {images.map((image, index) => (
@@ -246,6 +286,18 @@ export function EinzelÜbungScreen() {
           <Text style={styles.sectionText}>Fortschritt</Text>
         </TouchableOpacity>
       </View>
+
+      <Modal
+        visible={modalVisiblef}
+        animationType="slide"
+        transparent={false}
+        onRequestClose={closeModal}
+      >
+        {/* Verwenden Sie Ihre aktualisierte Modal-Komponente */}
+        <GewichtUndWiederholungen closeModal={closeModal} />
+      </Modal>   
+
     </View>
+  
   );
 }
