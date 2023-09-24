@@ -290,7 +290,7 @@ export function EinzelÜbungScreen() {
       <Modal
         visible={modalVisiblef}
         animationType="slide"
-        transparent={false}
+        transparent={true}
         onRequestClose={closeModal}
       >
         {/* Verwenden Sie Ihre aktualisierte Modal-Komponente */}
