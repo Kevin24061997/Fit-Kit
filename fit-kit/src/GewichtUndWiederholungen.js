@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { styles } from './styles';
-import { useUserData } from './InputPages/UserDataContext';
+import { useNavigation } from '@react-navigation/native';
+
 
 function GewichtUndWiederholungen({ closeModal }) {
   const [maximaleWiederholung, setMaximaleWiederholung] = useState('0');
   const [maximalesGewicht, setMaximalesGewicht] = useState('0');
-  const { userTraining } = useUserData(); // Stellen Sie sicher, dass Sie den User Context korrekt importiert haben
+  const navigation = useNavigation();
 
   const handleMaximaleWiederholungChange = (text) => {
     setMaximaleWiederholung(text);
@@ -18,26 +19,7 @@ function GewichtUndWiederholungen({ closeModal }) {
     setMaximaleWiederholung('0');
   };
 
-  useEffect(() => {
-    loadTrainingData();
-  }, []);
 
-  const loadTrainingData = () => {
-    // Laden Sie das ausgewählte Ziel aus dem Benutzerkontext
-    const selectedGoal = userTraining.goal;
-
-    // Setzen Sie die Werte basierend auf dem ausgewählten Ziel
-    if (selectedGoal === 'Hautstraffung') {
-      // Logik für Hautstraffung
-      // Setzen Sie hier die gewünschten Werte für list1 und list2
-    } else if (selectedGoal === 'Fettverlust') {
-      // Logik für Fettverlust
-      // Setzen Sie hier die gewünschten Werte für list1 und list2
-    } else if (selectedGoal === 'Muskelaufbau') {
-      // Logik für Muskelaufbau
-      // Setzen Sie hier die gewünschten Werte für list1 und list2
-    }
-  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -73,8 +55,16 @@ function GewichtUndWiederholungen({ closeModal }) {
             placeholder="0"
             placeholderTextColor="silver"
           />
-
-          <Button title="Schließen" onPress={closeModal} />
+          <Button
+            title="Schließen"
+            onPress={() => {
+              // Parameter an den EinzelÜbungScreen übergeben
+              navigation.navigate('EinzelÜbung', {
+                maximaleWiederholung,
+                maximalesGewicht,
+              });
+              closeModal(); // Schließen des aktuellen Modals
+            }}/>
         </View>
       </View>
     </TouchableWithoutFeedback>

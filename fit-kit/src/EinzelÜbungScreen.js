@@ -19,6 +19,8 @@ export function EinzelÜbungScreen() {
 
   const route = useRoute();
   const [selectedImageIndex, setSelectedImageIndex] = useState(route.params.selectedImageIndex);
+  const { maximaleWiederholung, maximalesGewicht } = route.params;
+  console.log(maximaleWiederholung,maximalesGewicht)
   
 
     // Funktion zum Speichern der berechneten Daten
