@@ -10,7 +10,6 @@ export function Speichern() {
     }
   };
 
-  // Funktion zum Laden der gespeicherten Daten
   const loadImageContentsFromStorage = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('imageContents');
@@ -20,5 +19,20 @@ export function Speichern() {
       return null;
     }
   };
-  return { saveImageContentsToStorage, loadImageContentsFromStorage };
+
+  const updateInitialImageContents = async () => {
+    // Laden Sie die gespeicherten Daten
+    const savedData = await loadImageContentsFromStorage();
+
+    if (savedData) {
+      // Aktualisieren Sie list1 und list2 in initialImageContents mit den gespeicherten Werten
+      initialImageContents.forEach((item, index) => {
+        item.list1 = savedData[index].list1;
+        item.list2 = savedData[index].list2;
+      });
+    }
+  };
+
+
+  return { saveImageContentsToStorage, loadImageContentsFromStorage, updateInitialImageContents };
 }
