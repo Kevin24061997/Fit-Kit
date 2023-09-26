@@ -65,26 +65,32 @@ export function EinzelÜbungScreen() {
   };
 
   const handleDelete = () => {
-    if (imageContents && imageContents[selectedImageIndex] && imageContents[selectedImageIndex].list1.length > 1 && imageContents[selectedImageIndex].list2.length > 0) {
+    if (
+      imageContents &&
+      imageContents[selectedImageIndex] &&
+      imageContents[selectedImageIndex].list1 &&
+      imageContents[selectedImageIndex].list2 &&
+      imageContents[selectedImageIndex].list1.length > 1 &&
+      imageContents[selectedImageIndex].list2.length > 0
+    ) {
       const newList1 = [...imageContents[selectedImageIndex].list1];
       const newList2 = [...imageContents[selectedImageIndex].list2];
-      const newCheckboxList1 = [...imageContents[selectedImageIndex].checkboxList1];
       const newCheckboxList2 = [...imageContents[selectedImageIndex].checkboxList2];
   
       newList1.pop();
       newList2.pop();
-      newCheckboxList1.pop();
       newCheckboxList2.pop();
   
       const updatedImageContents = [...imageContents];
       updatedImageContents[selectedImageIndex].list1 = newList1;
       updatedImageContents[selectedImageIndex].list2 = newList2;
-      updatedImageContents[selectedImageIndex].checkboxList1 = newCheckboxList1;
       updatedImageContents[selectedImageIndex].checkboxList2 = newCheckboxList2;
   
       saveData(updatedImageContents);
     }
   };
+  
+  
 
   const handleCheck2 = (index) => {
     const newCheckboxList2 = [...imageContents[selectedImageIndex].checkboxList2];
@@ -108,23 +114,37 @@ export function EinzelÜbungScreen() {
   }
 
   const handleAdd = () => {
-    if (imageContents && imageContents[selectedImageIndex] && imageContents[selectedImageIndex].list1.length < 6) {
-      const newItem = (parseInt(imageContents[selectedImageIndex].list1[imageContents[selectedImageIndex].list1.length - 1]) + 1).toString();
-
-      const newList1 = [...imageContents[selectedImageIndex].list1, newItem];
-      const newList2 = [...imageContents[selectedImageIndex].list2, newItem];
-      const newCheckboxList1 = [...imageContents[selectedImageIndex].checkboxList1, false];
-      const newCheckboxList2 = [...imageContents[selectedImageIndex].checkboxList2, false];
+    if (
+      imageContents &&
+      imageContents[selectedImageIndex] &&
+      imageContents[selectedImageIndex].list1 &&
+      imageContents[selectedImageIndex].list2 &&
+      imageContents[selectedImageIndex].list1.length < 6
+    ) {
+      const lastItemIndex = imageContents[selectedImageIndex].list1.length - 1;
   
-      const updatedImageContents = [...imageContents];
-      updatedImageContents[selectedImageIndex].list1 = newList1;
-      updatedImageContents[selectedImageIndex].list2 = newList2;
-      updatedImageContents[selectedImageIndex].checkboxList1 = newCheckboxList1;
-      updatedImageContents[selectedImageIndex].checkboxList2 = newCheckboxList2;
+      if (lastItemIndex >= 0) {
+        const lastItem1 = imageContents[selectedImageIndex].list1[lastItemIndex];
+        const lastItem2 = imageContents[selectedImageIndex].list2[lastItemIndex];
   
-      saveData(updatedImageContents);
+        const newList1 = [...imageContents[selectedImageIndex].list1, lastItem1];
+        const newList2 = [...imageContents[selectedImageIndex].list2, lastItem2];
+        const newCheckboxList2 = [
+          ...imageContents[selectedImageIndex].checkboxList2,
+          false,
+        ];
+  
+        const updatedImageContents = [...imageContents];
+        updatedImageContents[selectedImageIndex].list1 = newList1;
+        updatedImageContents[selectedImageIndex].list2 = newList2;
+        updatedImageContents[selectedImageIndex].checkboxList2 = newCheckboxList2;
+  
+        saveData(updatedImageContents);
+      }
     }
   };
+  
+  
 
   const handleImageSelect = (index) => {
     setSelectedImageIndex(index);
@@ -141,26 +161,29 @@ export function EinzelÜbungScreen() {
   };
   
   useEffect(() => {
-    if (imageContents && imageContents[selectedImageIndex] && !imageContents[selectedImageIndex].modalVisible) {
-      openModal(selectedImageIndex);
-
+    if (imageContents && imageContents[selectedImageIndex]) {
       const updatedImageContents = [...imageContents];
-      updatedImageContents[selectedImageIndex].modalVisible = true;
       
-      
-      
-      generateTrainingLists(selectedImageIndex);
-      loadImageContentsFromStorage();
+      if (!updatedImageContents[selectedImageIndex].modalVisible) {
+        openModal(selectedImageIndex);
+        updatedImageContents[selectedImageIndex].modalVisible = true;
+        generateTrainingLists(selectedImageIndex);
+        loadImageContentsFromStorage();
+      }
     }
   }, [imageContents]);
-
+  
   const [modalVisiblef, setModalVisiblef] = useState(false);
-
+  
   const openModal = (index) => {
     setSelectedImageIndex(index);
-    setModalVisiblef(true);
+    
+    // Überprüfen, ob modalVisiblef auf false gesetzt ist
+    if (!modalVisiblef) {
+      setModalVisiblef(true);
+    }
   };
-
+  
   const closeModal = () => {
     setModalVisiblef(false);
   };
