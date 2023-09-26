@@ -1,50 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Image, Button, TouchableOpacity, FlatList, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Importieren Sie die Speichern-Funktion
+import { saveAllData } from './function/Speichern';
 
-// Stile und Funktionen importieren
+// Importieren Sie Ihre benutzerdefinierten Funktionen und Stile
 import { styles } from './styles';
 import { HeaderTimer } from './function/HeaderTimer';
 import { PushTimer } from './function/PushTimer';
 import { Bilder } from './function/Bilder';
-import { DifficultyModal } from './Modal/DifficultyModal'; // Importieren Sie das Schwierigkeitsauswahl-Modal
-import { InfoModal } from './Modal/InfoModal'; // Importieren Sie das Informations-Modal
+import { DifficultyModal } from './Modal/DifficultyModal';
+import { InfoModal } from './Modal/InfoModal';
 import { Speichern } from './function/Speichern';
 import { initialImageContents } from './function/imageData';
 import { useRoute } from '@react-navigation/native';
 import GewichtUndWiederholungen from './GewichtUndWiederholungen';
 import { useUserData } from './InputPages/UserDataContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function EinzelÜbungScreen() {
   const navigation = useNavigation();
-
   const route = useRoute();
+
   const [selectedImageIndex, setSelectedImageIndex] = useState(route.params.selectedImageIndex);
   const { maximaleWiederholung, maximalesGewicht } = route.params;
-  console.log(maximaleWiederholung,maximalesGewicht)
-  
 
-    // Funktion zum Speichern der berechneten Daten
   const { saveImageContentsToStorage, loadImageContentsFromStorage, updateInitialImageContents } = Speichern();
-
-  // Funktion zum Speichern der Daten, wenn sie geändert werden
-  const saveData = (updatedImageContents) => {
+  const saveData = async (updatedImageContents) => {
     setImageContents(updatedImageContents);
-    saveImageContentsToStorage(updatedImageContents);
+    await saveImageContentsToStorage(updatedImageContents);
   };
-  
-  HeaderTimer(navigation, false);
 
-  // Timer in Container ##############################
+  useEffect(() => {
+    async function initializeData() {
+      const loadedData = await loadImageContentsFromStorage();
+      if (loadedData) {
+        setImageContents(loadedData);
+      }
+    }
+    initializeData();
+  }, []);
+  
+
+  HeaderTimer(navigation, false);
 
   const { startTimer, decreaseTime, handleTimerTextClick, formatTime1, increaseTime } = PushTimer();
 
-  // Bilder ##############################
-  const images = Bilder
+  const images = Bilder;
 
-  // Inhalt für jedes Bild
   const [imageContents, setImageContents] = useState(initialImageContents);
   
   const [modalVisible, setModalVisible] = useState(false);
@@ -61,17 +65,16 @@ export function EinzelÜbungScreen() {
   };
 
   const handleDelete = () => {
-    // Hier den Code zur Verarbeitung des Löschen-Buttons einfügen
     if (imageContents && imageContents[selectedImageIndex] && imageContents[selectedImageIndex].list1.length > 1 && imageContents[selectedImageIndex].list2.length > 0) {
       const newList1 = [...imageContents[selectedImageIndex].list1];
       const newList2 = [...imageContents[selectedImageIndex].list2];
       const newCheckboxList1 = [...imageContents[selectedImageIndex].checkboxList1];
       const newCheckboxList2 = [...imageContents[selectedImageIndex].checkboxList2];
   
-      newList1.pop(); // Entfernt den letzten Eintrag aus Liste 1
-      newList2.pop(); // Entfernt den letzten Eintrag aus Liste 2
-      newCheckboxList1.pop(); // Entfernt den letzten Eintrag aus Checkbox-Liste 1
-      newCheckboxList2.pop(); // Entfernt den letzten Eintrag aus Checkbox-Liste 2
+      newList1.pop();
+      newList2.pop();
+      newCheckboxList1.pop();
+      newCheckboxList2.pop();
   
       const updatedImageContents = [...imageContents];
       updatedImageContents[selectedImageIndex].list1 = newList1;
@@ -84,7 +87,6 @@ export function EinzelÜbungScreen() {
   };
 
   const handleCheck2 = (index) => {
-    // Hier den Code zur Verarbeitung der Checkboxen einfügen
     const newCheckboxList2 = [...imageContents[selectedImageIndex].checkboxList2];
     newCheckboxList2[index] = !newCheckboxList2[index];
 
@@ -92,7 +94,7 @@ export function EinzelÜbungScreen() {
     updatedImageContents[selectedImageIndex].checkboxList2 = newCheckboxList2;
 
     saveData(updatedImageContents);
-    setModalVisible(true); // Öffnet das Modal beim Klicken auf die Checkbox
+    setModalVisible(true);
   };
 
   const [infoVisible, setInfoVisible] = useState(false);
@@ -105,13 +107,10 @@ export function EinzelÜbungScreen() {
     setInfoVisible(true)
   }
 
-
   const handleAdd = () => {
-    // Hier den Code zur Verarbeitung des Hinzufügen-Buttons einfügen
     if (imageContents && imageContents[selectedImageIndex] && imageContents[selectedImageIndex].list1.length < 6) {
-      // Überprüfung, ob die maximale Anzahl von Einträgen erreicht ist
-      const newItem = (parseInt(imageContents[selectedImageIndex].list1[imageContents[selectedImageIndex].list1.length - 1]) + 1).toString(); // Erzeugt eine neue Zahl
-  
+      const newItem = (parseInt(imageContents[selectedImageIndex].list1[imageContents[selectedImageIndex].list1.length - 1]) + 1).toString();
+
       const newList1 = [...imageContents[selectedImageIndex].list1, newItem];
       const newList2 = [...imageContents[selectedImageIndex].list2, newItem];
       const newCheckboxList1 = [...imageContents[selectedImageIndex].checkboxList1, false];
@@ -124,45 +123,36 @@ export function EinzelÜbungScreen() {
       updatedImageContents[selectedImageIndex].checkboxList2 = newCheckboxList2;
   
       saveData(updatedImageContents);
-    } else {
-      // Hier können Sie eine Benachrichtigung anzeigen oder andere Maßnahmen ergreifen,
-      // um dem Benutzer mitzuteilen, dass die maximale Anzahl von Einträgen erreicht ist.
+    }
+  };
+
+  const handleImageSelect = (index) => {
+    setSelectedImageIndex(index);
+    if (!imageContents[index].modalVisible) {
+      openModal(index);
+
+      const updatedImageContents = [...imageContents];
+      updatedImageContents[index].modalVisible = true;
+      setImageContents(updatedImageContents);
+    
+      generateTrainingLists(selectedImageIndex);
+      saveData(updatedImageContents);
     }
   };
   
-  
-
-  const handleImageSelect = (index) => {
-  setSelectedImageIndex(index);
-  if (!imageContents[index].modalVisible) {
-    openModal(index);
-
-    const updatedImageContents = [...imageContents];
-    updatedImageContents[index].modalVisible = true;
-    setImageContents(updatedImageContents);
-    
-    // Hier wird selectedImageIndex um eins verringert
-    generateTrainingLists(selectedImageIndex ); // Rufen Sie die Funktion mit dem ausgewählten Bildindex auf
-    saveData(updatedImageContents);
-  }
-};
-  
-  // ...
-  
   useEffect(() => {
-    // Überprüfen Sie, ob modalVisible auf false gesetzt ist
     if (imageContents && imageContents[selectedImageIndex] && !imageContents[selectedImageIndex].modalVisible) {
-      // Öffnen Sie das Modal nur, wenn modalVisible auf false gesetzt ist
       openModal(selectedImageIndex);
-  
-      // Setzen Sie modalVisible auf true und speichern Sie die Änderungen in imageContents
+
       const updatedImageContents = [...imageContents];
       updatedImageContents[selectedImageIndex].modalVisible = true;
-      setImageContents(updatedImageContents);
-      saveData(updatedImageContents);
+      
+      
+      
+      generateTrainingLists(selectedImageIndex);
+      loadImageContentsFromStorage();
     }
   }, [imageContents]);
-
 
   const [modalVisiblef, setModalVisiblef] = useState(false);
 
@@ -176,121 +166,105 @@ export function EinzelÜbungScreen() {
   };
 
   const { userTraining, setUserTraining } = useUserData();
-const [goal, setGoal] = useState('');
+  const [goal, setGoal] = useState('');
 
+  useEffect(() => {
+    if (route.params && route.params.maximaleWiederholung && route.params.maximalesGewicht) {
+      loadTrainingData();
+      generateTrainingLists(selectedImageIndex);
+    }
+  }, [route.params]);
 
-useEffect(() => {
-  if (route.params && route.params.maximaleWiederholung && route.params.maximalesGewicht) {
-    // Überprüfen Sie, ob maximaleWiederholung und maximalesGewicht in route.params verfügbar sind
-    loadTrainingData();
-      
-    generateTrainingLists(selectedImageIndex ); // Rufen Sie die Funktion mit dem ausgewählten Bildindex auf
-  }
-}, [route.params]); // Abhängigkeit von route.params
+  const loadTrainingData = async () => {
+    try {
+      setGoal(userTraining.goal || '');
+      if (goal === 'Muskelaufbau') {
+        generateTrainingLists();
+      }
+    } catch (error) {
+      console.error('Fehler beim Laden der Trainingsdaten:', error);
+    }
+  };
 
+  const generateRandomInt = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
 
-const loadTrainingData = async () => {
-  try {
-    setGoal(userTraining.goal || '');
+  const calculateWeightsAndReps = (goal, maximalesGewicht) => {
+    const list1 = [];
+    const list2 = [];
+
     if (goal === 'Muskelaufbau') {
-      generateTrainingLists(); // Rufen Sie die Generierteung der Listen nur auf, wenn das Ziel "Muskelaufbau" ist
-    }
-  } catch (error) {
-    console.error('Fehler beim Laden der Trainingsdaten:', error);
-  }
-};
+      const randomRepCount = generateRandomInt(6, 12);
 
-const generateRandomInt = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
-const calculateWeightsAndReps = (goal, maximalesGewicht) => {
-  const list1 = [];
-  const list2 = [];
-
-  if (goal === 'Muskelaufbau') {
-    const randomRepCount = generateRandomInt(6, 12);
-
-    // Berechnung des Prozentsatzes basierend auf der Anzahl der Wiederholungen
-    let percentage = 0;
-    switch (randomRepCount) {
-      case 6:
-        percentage = 0.85;
-        break;
-      case 7:
-        percentage = 0.825;
-        break;
-      case 8:
-        percentage = 0.80;
-        break;
-      case 9:
-        percentage = 0.775;
-        break;
-      case 10:
-        percentage = 0.75;
-        break;
-      case 11:
-        percentage = 0.725;
-        break;
-      case 12:
-        percentage = 0.70;
-        break;
-      default:
-        percentage = 0;
-        break;
-    }
-
-    if (maximalesGewicht > 0) {
-      // Wenn maxWeight größer als 0 ist, setze die zufällige Zahl in list1
-      for (let i = 0; i < 4; i++) {
-        list1.push(randomRepCount);
+      let percentage = 0;
+      switch (randomRepCount) {
+        case 6:
+          percentage = 0.85;
+          break;
+        case 7:
+          percentage = 0.825;
+          break;
+        case 8:
+          percentage = 0.80;
+          break;
+        case 9:
+          percentage = 0.775;
+          break;
+        case 10:
+          percentage = 0.75;
+          break;
+        case 11:
+          percentage = 0.725;
+          break;
+        case 12:
+          percentage = 0.70;
+          break;
+        default:
+          percentage = 0;
+          break;
       }
 
-      // Berechnung der Werte für list2 basierend auf maxWeight
-      for (let i = 0; i < 4; i++) {
-        list2.push(Math.round(percentage * maximalesGewicht));
+      if (maximalesGewicht > 0) {
+        for (let i = 0; i < 4; i++) {
+          list1.push(randomRepCount);
+        }
+
+        for (let i = 0; i < 4; i++) {
+          list2.push(Math.round(percentage * maximalesGewicht));
+        }
+      } else {
+        list2.fill(0);
       }
     } else {
-      // Wenn maxWeight gleich 0 ist, setze alle Einträge in list2 auf 0
+      list1.fill(0);
       list2.fill(0);
     }
-  } else {
-    // Wenn das Ziel nicht "Muskelaufbau" ist, setze beide Listen auf 0
-    list1.fill(0);
-    list2.fill(0);
-  }
 
-  return { list1, list2 };
-};
+    return { list1, list2 };
+  };
 
-const generateTrainingLists = async (selectedImageIndex) => {
-  const updatedImageContents = [...imageContents];
+  const generateTrainingLists = async (selectedImageIndex) => {
+    const updatedImageContents = [...imageContents];
   
-  // Überprüfen, ob goal "Muskelaufbau" ist und ob maximalesGewicht größer als 0 ist
-  if (goal === 'Muskelaufbau' && maximalesGewicht > 0 && selectedImageIndex < updatedImageContents.length) {
-    const { list1, list2 } = calculateWeightsAndReps(goal, maximalesGewicht);
-    updatedImageContents[selectedImageIndex].list1 = list1;
-    updatedImageContents[selectedImageIndex].list2 = list2;
-    saveData(updatedImageContents);
-
-    await AsyncStorage.setItem('imageContents', JSON.stringify(updatedImageContents));
-    setImageContents(updatedImageContents);
-    loadImageContentsFromStorage();
-  } else if (selectedImageIndex < updatedImageContents.length) {
-    // Wenn goal nicht "Muskelaufbau" ist oder maximalesGewicht kleiner oder gleich 0 ist, füllen Sie die Listen mit Nullen
-    updatedImageContents[selectedImageIndex].list1.fill(0);
-    updatedImageContents[selectedImageIndex].list2.fill(0);
-
-    await AsyncStorage.setItem('imageContents', JSON.stringify(updatedImageContents));
-    setImageContents(updatedImageContents);
-    loadImageContentsFromStorage();
-    saveData(updatedImageContents);
-  }
-};
-
+    if (goal === 'Muskelaufbau' && maximalesGewicht > 0 && selectedImageIndex < updatedImageContents.length) {
+      const { list1, list2 } = calculateWeightsAndReps(goal, maximalesGewicht);
+      updatedImageContents[selectedImageIndex].list1 = list1;
+      updatedImageContents[selectedImageIndex].list2 = list2;
+  
+      await AsyncStorage.setItem('imageContents', JSON.stringify(updatedImageContents));
+      setImageContents(updatedImageContents);
+    } else if (selectedImageIndex < updatedImageContents.length) {
+      const { list1, list2 } = calculateWeightsAndReps(goal, maximalesGewicht);
+      updatedImageContents[selectedImageIndex].list1 = list1;
+      updatedImageContents[selectedImageIndex].list2 = list2;
+  
+      await AsyncStorage.setItem('imageContents', JSON.stringify(updatedImageContents));
+      setImageContents(updatedImageContents);
+    }
+  };
 
   return (
-
     <View style={styles.infoBlockContainer}>
       <ScrollView horizontal style={{ flexDirection: 'row' }}>
         {images.map((image, index) => (
@@ -303,8 +277,8 @@ const generateTrainingLists = async (selectedImageIndex) => {
         ))}
       </ScrollView>
 
-      <View style={styles.container1 }>
-      <Image source={images[selectedImageIndex].primaryImage} style={{ width: 70, height: 70, borderRadius: 10 }} />
+      <View style={styles.container1}>
+        <Image source={images[selectedImageIndex].primaryImage} style={{ width: 70, height: 70, borderRadius: 10 }} />
         <Text style={styles.headingStyle}>{imageContents[selectedImageIndex].heading}</Text>
         <View style={styles.timecontainer}>
           <View style={styles.timerControls}>
@@ -401,11 +375,8 @@ const generateTrainingLists = async (selectedImageIndex) => {
         transparent={true}
         onRequestClose={closeModal}
       >
-        {/* Verwenden Sie Ihre aktualisierte Modal-Komponente */}
         <GewichtUndWiederholungen closeModal={closeModal} />
       </Modal>   
-
     </View>
-  
   );
 }

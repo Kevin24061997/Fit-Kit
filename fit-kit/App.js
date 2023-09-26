@@ -34,6 +34,9 @@ const clearAsyncStorage = async () => {
 // Rufen Sie die Funktion zum Leeren des AsyncStorage auf, wenn Sie es benötigen.
 // clearAsyncStorage();
 
+
+
+
 const Stack = createNativeStackNavigator();
 
 export function App() {
