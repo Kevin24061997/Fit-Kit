@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 import { MainScreen } from './src/MainScreen';
+import {InputPage0} from './src/InputPages/inputPage0';
 import {InputPage1} from './src/InputPages/InputPage1';
 import {InputPage2} from './src/InputPages/InputPage2';
 import {InputPage3} from './src/InputPages/InputPage3';
@@ -33,7 +34,6 @@ const clearAsyncStorage = async () => {
 
 // Rufen Sie die Funktion zum Leeren des AsyncStorage auf, wenn Sie es benötigen.
 // clearAsyncStorage();
-
 
 
 
@@ -78,6 +78,15 @@ export function App() {
               },
             }}
             />  
+            <Stack.Screen name="Willkommen bei Fit-Kit" component={InputPage0} options={{
+              headerStyle: {
+                backgroundColor: 'black',
+              },headerTitleStyle: {
+                fontSize: 30, // Wähle die gewünschte Schriftgröße
+                fontWeight: 'bold', // 'bold' macht den Text fett
+                color: 'white', // Ändere die Textfarbe nach Bedarf
+              },
+            }}  />
             <Stack.Screen name="InputPage1" component={InputPage1} options={{
               headerStyle: {
                 backgroundColor: 'black',

@@ -72,7 +72,7 @@ export function InputPage3() {
     <ScrollView contentContainerStyle={styles.inputContainer}>
     {!inputDone ? (
       <View>
-        <Text style={styles.inputText}>Geben Sie Ihr Gewicht ein:</Text>
+        <Text style={styles.inputText}>Geben Sie Ihr{'\n'}Gewicht(in kg) ein:</Text>
         <TextInput
           style={styles.inputField}
           value={weight}

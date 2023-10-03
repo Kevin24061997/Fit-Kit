@@ -60,12 +60,12 @@ export function InputPage8() {
     <ScrollView contentContainerStyle={styles.inputContainer}>
       {!inputDone ? (
         <View>
-          <Text style={styles.inputText}>Wie lange können Sie pro Trainingseinheit trainieren?</Text>
+          <Text style={styles.inputText}>Wie lange können Sie pro Trainingseinheit (in Minuten) trainieren?</Text>
           <TextInput
             style={styles.inputField}
             value={howLong}
             onChangeText={(text) => setHowLong(text)}
-            placeholder="Dauer pro Trainingseinheit (in Minuten)"
+            placeholder="Dauer pro Trainingseinheit"
             keyboardType="numeric"
             placeholderTextColor="white"
           />

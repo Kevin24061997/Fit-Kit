@@ -3,8 +3,6 @@ import { View, Text, ScrollView, Image, Button, TouchableOpacity, FlatList, Moda
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Importieren Sie die Speichern-Funktion
-import { saveAllData } from './function/Speichern';
 
 // Importieren Sie Ihre benutzerdefinierten Funktionen und Stile
 import { styles } from './styles';

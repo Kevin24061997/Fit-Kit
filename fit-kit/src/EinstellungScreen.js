@@ -304,7 +304,7 @@ export function EinstellungScreen() {
           />
         </View>
         <View style={styles.column}>
-          <Text style={styles.textWhite}>Körpergröße (in cm):</Text>
+          <Text style={styles.textWhite}>Körpergröße{'\n'}     (in cm):</Text>
           <TextInput
             value={height}
             onChangeText={(text) => setHeight(text)}
@@ -324,7 +324,7 @@ export function EinstellungScreen() {
           />
         </View>
         <View style={styles.column}>
-          <Text style={styles.textWhite}>Nackenumfang (in cm):</Text>
+          <Text style={styles.textWhite}>Nackenumfang{'\n'}     (in cm):</Text>
           <TextInput
             value={neck}
             onChangeText={(text) => setNeck(text)}
@@ -334,7 +334,7 @@ export function EinstellungScreen() {
           />
         </View>
         <View style={styles.column}>
-          <Text style={styles.textWhite}>Taillenumfang (in cm):</Text>
+          <Text style={styles.textWhite}>Taillenumfang{'\n'}     (in cm):</Text>
           <TextInput
             value={waist}
             onChangeText={(text) => setWaist(text)}
@@ -344,7 +344,7 @@ export function EinstellungScreen() {
           />
         </View>
         <View style={styles.column}>
-          <Text style={styles.textWhite}>Hüftumfang (in cm):</Text>
+          <Text style={styles.textWhite}>Hüftumfang{'\n'}     (in cm):</Text>
           <TextInput
             value={hip}
             onChangeText={(text) => setHip(text)}
@@ -354,7 +354,7 @@ export function EinstellungScreen() {
           />
         </View>
         <View style={styles.column}>
-          <Text style={styles.textWhite}>Wie viele Schritte heute:</Text>
+          <Text style={styles.textWhite}>     Wie viele Schritte heute:</Text>
           <TextInput
             value={steps}
             onChangeText={(text) => setSteps(text)}
@@ -364,7 +364,7 @@ export function EinstellungScreen() {
           />
         </View>
         <View style={styles.column}>
-          <Text style={styles.textWhite}>Trainingshäufigkeit:</Text>
+          <Text style={styles.textWhite}>Trainings-{'\n'}häufigkeit:</Text>
           <TextInput
             value={howOften}
             onChangeText={(text) => setHowOften(text)}
@@ -374,7 +374,7 @@ export function EinstellungScreen() {
           />
         </View>
         <View style={styles.column}>
-          <Text style={styles.textWhite}>Trainingsdauer (in Minuten):</Text>
+          <Text style={styles.textWhite}>Trainingsdauer{'\n'}   (in Minuten):</Text>
           <TextInput
             value={howLong}
             onChangeText={(text) => setHowLong(text)}
@@ -427,20 +427,20 @@ export function EinstellungScreen() {
         )}
         {bodyFatPercentage !== null && (
           <View style={styles.columnrechnung}>
-            <Text style={styles.textWhite}>Geschätzter Körperfettanteil (%):</Text>
-            <Text style={styles.input}>{bodyFatPercentage}</Text>
+            <Text style={styles.textWhite}>Körperfettanteil:</Text>
+            <Text style={styles.input}>{bodyFatPercentage}%</Text>
           </View>
         )}
         {muscleMass !== null && (
           <View style={styles.columnrechnung}>
-            <Text style={styles.textWhite}>Geschätzte Fettfreie Masse (kg):</Text>
-            <Text style={styles.input}>{muscleMass}</Text>
+            <Text style={styles.textWhite}>Fettfreie Masse:</Text>
+            <Text style={styles.input}>{muscleMass}kg</Text>
           </View>
         )}
         {bodyWaterPercentage !== null && (
           <View style={styles.columnrechnung}>
-            <Text style={styles.textWhite}>Geschätzter Körperwasseranteil (%):</Text>
-            <Text style={styles.input}>{bodyWaterPercentage}</Text>
+            <Text style={styles.textWhite}>Körperwasser-{'\n'}        anteil:</Text>
+            <Text style={styles.input}>{bodyWaterPercentage}%</Text>
           </View>
         )}
         {ffmi !== null && (
@@ -457,7 +457,7 @@ export function EinstellungScreen() {
         )}
         {totalEnergyExpenditure !== null && (
           <View style={styles.columnrechnung}>
-            <Text style={styles.textWhite}>Gesamter Energieverbrauch:</Text>
+            <Text style={styles.textWhite}>  Energie-{'\n'}verbrauch:</Text>
             <Text style={styles.input}>{totalEnergyExpenditure}</Text>
           </View>
         )}

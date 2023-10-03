@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, ScrollView, TextInput, Alert } from 'react-native';
+import { View, Text, Button, ScrollView, Modal, TouchableOpacity } from 'react-native';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserData } from './UserDataContext';
@@ -8,8 +8,8 @@ import { styles } from '../style.js/Inputstyle';
 
 export function InputPage2() {
   const navigation = useNavigation();
-  const { userData, setUserData } = useUserData(); // Verwenden Sie den UserDataContext
-  const isFocused = useIsFocused(); // Nutzen Sie useIsFocused
+  const { userData, setUserData } = useUserData();
+  const isFocused = useIsFocused();
 
   function navigateToInputPage3() {
     navigation.navigate('InputPage3');
@@ -17,6 +17,7 @@ export function InputPage2() {
 
   const [gender, setGender] = useState('');
   const [inputDone, setInputDone] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     checkInputStatus();
@@ -25,7 +26,7 @@ export function InputPage2() {
 
   useEffect(() => {
     if (isFocused && inputDone) {
-      navigateToInputPage3(); // Hier wird zur nächsten Seite navigiert, wenn die Seite im Fokus ist
+      navigateToInputPage3();
     }
   }, [isFocused, inputDone]);
 
@@ -47,9 +48,9 @@ export function InputPage2() {
         const userDataFromStorage = JSON.parse(userDataJSON);
         if (userDataFromStorage.gender) {
           setGender(userDataFromStorage.gender);
+          setInputDone(true);
         }
       } else {
-        // Wenn userData nicht vorhanden ist, initialisieren Sie es mit Anfangswerten
         await AsyncStorage.setItem('userData', JSON.stringify(userData));
       }
     } catch (error) {
@@ -57,16 +58,14 @@ export function InputPage2() {
     }
   };
 
-  const handleInputDone = async () => {
-    // Validierung sicherstellen, dass nur "Mann" oder "Frau" eingegeben werden kann
-    if (gender !== 'Mann' && gender !== 'Frau') {
-      Alert.alert('Ungültiges Geschlecht', 'Bitte geben Sie entweder "Mann" oder "Frau" ein.');
+  const handleInputDone = async (selectedGender) => {
+    if (inputDone) {
       return;
     }
 
     try {
-      const updatedUserData = { ...userData, gender: gender }; // Aktualisieren Sie userData mit dem Geschlecht
-      setUserData(updatedUserData); // Setzen Sie die aktualisierten Daten im Context
+      const updatedUserData = { ...userData, gender: selectedGender };
+      setUserData(updatedUserData);
       await AsyncStorage.setItem('inputStatusPage2', 'done');
       setInputDone(true);
     } catch (error) {
@@ -74,25 +73,57 @@ export function InputPage2() {
     }
   };
 
+  const showModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleGenderSelection = (selectedGender) => {
+    setGender(selectedGender);
+    setModalVisible(false);
+    handleInputDone(selectedGender);
+  };
+
+  const handleModalClose = () => {
+    setModalVisible(false);
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.inputContainer}>
       {!inputDone ? (
         <View>
-          <Text style={styles.inputText}>Geben Sie Ihr Geschlecht ein:</Text>
-          <TextInput
-            style={styles.inputField}
-            value={gender}
-            onChangeText={(text) => setGender(text)}
-            placeholder="Geschlecht (Mann/Frau)"
-            placeholderTextColor="white"
-          />
-          <Button
-            title="Eingabe beenden"
-            onPress={handleInputDone}
-            style={styles.button}
-          />
+          <TouchableOpacity onPress={showModal}>
+            <View style={styles.column}>
+              <Text style={styles.inputText}>Geben Sie Ihr Geschlecht ein:</Text>
+              <Text style={styles.input}>{gender}</Text>
+            </View>
+          </TouchableOpacity>
         </View>
-      ) : null}
+      ) : (
+        <Text style={styles.inputText}>Geschlecht: {gender}</Text>
+      )}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={handleModalClose}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={[styles.modalText, { color: 'white' }]}>Geschlecht auswählen:</Text>
+            <TouchableOpacity
+              onPress={() => handleGenderSelection('Mann')}
+              style={[styles.goalButton, { backgroundColor: 'darkblue' }]}
+            >
+              <Text style={[styles.buttonText1]}>Mann</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleGenderSelection('Frau')}
+              style={[styles.goalButton, { backgroundColor: 'darkblue' }]}
+            >
+              <Text style={[styles.buttonText1]}>Frau</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }

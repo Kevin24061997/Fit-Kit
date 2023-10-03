@@ -20,8 +20,7 @@ export function InfoModal({ infoVisible, handleInfoClose, selectedImageIndex, im
             <ScrollView>
               <Text style={styles.headingStyle1}>{imageContents[selectedImageIndex].heading}</Text>
               <ImageSwitcher imageIndex={selectedImageIndex} />
-              <Text style={[styles.modalText, { color: 'white' }]}>
-                so und so musst du das machen und so gehts weiter und weiter und weiter 
+              <Text style={[styles.modalText, { color: 'white' }]}>{imageContents[selectedImageIndex].info}
               </Text>
               <TouchableOpacity onPress={handleInfoClose}>
                 <Text style={{ color: 'white' }}>Schließen</Text>

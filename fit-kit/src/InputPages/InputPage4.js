@@ -72,7 +72,7 @@ export function InputPage4() {
     <ScrollView contentContainerStyle={styles.inputContainer}>
       {!inputDone ? (
         <View>
-          <Text style={styles.inputText}>Geben Sie Ihre Körpergröße ein:</Text>
+          <Text style={styles.inputText}>Geben Sie Ihre{'\n'}Körpergröße(in cm) ein:</Text>
           <TextInput
             style={styles.inputField}
             value={height}

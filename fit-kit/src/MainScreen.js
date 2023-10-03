@@ -14,7 +14,7 @@ export function MainScreen({ navigation }) {
       if (value === null) {
         // App wird zum ersten Mal gestartet
         await AsyncStorage.setItem('appStarted', 'true'); // Markieren Sie die App als gestartet
-        navigation.replace('InputPage1'); // Navigieren zur InputPage1 beim ersten Start
+        navigation.replace('Willkommen bei Fit-Kit'); // Navigieren zur InputPage0 beim ersten Start
       } else {
         // App wurde zuvor gestartet
         navigation.replace('Training'); // Navigieren zur Training-Seite bei jedem anderen Start

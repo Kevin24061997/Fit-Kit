@@ -332,10 +332,10 @@ mainseite: {
 },
 
 infoTagBilder: {
-  height: 150,
+  height: 180,
   width: 140,
   margin: 9,
-  marginTop: 20,
+  marginTop: 0,
   borderRadius: 10
 },
 

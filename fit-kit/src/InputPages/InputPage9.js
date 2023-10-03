@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, ScrollView, TextInput } from 'react-native';
+import { View, Text, Button, ScrollView, TextInput, TouchableOpacity, Modal } from 'react-native';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserData } from './UserDataContext';
@@ -9,7 +9,7 @@ import { styles } from '../style.js/Inputstyle';
 export function InputPage9() {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  const { userData, setUserData, userTraining, setUserTraining } = useUserData(); // Verwenden Sie den UserDataContext
+  const { userData, setUserData, userTraining, setUserTraining } = useUserData();
 
   function navigateToPage() {
     navigation.navigate('Training');
@@ -17,6 +17,7 @@ export function InputPage9() {
 
   const [goal, setGoal] = useState('');
   const [inputDone, setInputDone] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     checkInputStatus();
@@ -24,7 +25,7 @@ export function InputPage9() {
 
   useEffect(() => {
     if (isFocused && inputDone) {
-        navigateToPage();
+      navigateToPage();
     }
   }, [isFocused, inputDone]);
 
@@ -44,47 +45,80 @@ export function InputPage9() {
     return validGoals.includes(input);
   };
 
-  const handleInputDone = async () => {
-    if (!isValidGoal(goal)) {
-      alert('Ungültiges Trainingsziel. Bitte geben Sie eines der folgenden Ziele ein: Hautstraffung, Fettverlust, Muskelaufbau.');
+  const handleInputDone = async (selectedGoal) => {
+    if (!isValidGoal(selectedGoal)) {
       return;
     }
 
     try {
-      // Speichern Sie das Trainingsziel im Context
       setUserTraining({
         ...userTraining,
-        goal,
+        goal: selectedGoal,
       });
 
       await AsyncStorage.setItem('inputStatusPage9', 'done');
-      await AsyncStorage.setItem('goal', goal);
+      await AsyncStorage.setItem('goal', selectedGoal);
 
       setInputDone(true);
+      setModalVisible(false);
     } catch (error) {
       console.error('Fehler beim Speichern des Eingabestatus:', error);
     }
+  };
+
+  const showModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleTrainingGoalSelection = (selectedGoal) => {
+    handleInputDone(selectedGoal); // Automatically save the selected goal and mark input as done
+  };
+
+  const handleModalClose = () => {
+    setModalVisible(false);
   };
 
   return (
     <ScrollView contentContainerStyle={styles.inputContainer}>
       {!inputDone ? (
         <View>
-          <Text style={styles.inputText}>Welches Trainingsziel verfolgen Sie?</Text>
-          <TextInput
-            style={styles.inputField}
-            value={goal}
-            onChangeText={(text) => setGoal(text)}
-            placeholder="Trainingsziel (Hautstraffung, Fettverlust, Muskelaufbau)"
-            placeholderTextColor="white"
-          />
-          <Button
-            title="Eingabe beenden"
-            onPress={handleInputDone}
-            style={styles.button}
-          />
+          <TouchableOpacity onPress={showModal}>
+            <View style={styles.column}>
+              <Text style={styles.inputText}>Welches Trainingsziel verfolgen Sie?</Text>
+              <Text style={styles.input}>{goal}</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       ) : null}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={handleModalClose}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={[styles.modalText, { color: 'white' }]}>Trainingsziel auswählen:</Text>
+            <TouchableOpacity
+              onPress={() => handleTrainingGoalSelection('Hautstraffung')}
+              style={[styles.goalButton, { backgroundColor: 'darkblue' }]}
+            >
+              <Text style={[styles.buttonText1]}>Hautstraffung</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleTrainingGoalSelection('Fettverlust')}
+              style={[styles.goalButton, { backgroundColor: 'darkblue' }]}
+            >
+              <Text style={[styles.buttonText1]}>Fettverlust</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleTrainingGoalSelection('Muskelaufbau')}
+              style={[styles.goalButton, { backgroundColor: 'darkblue' }]}
+            >
+              <Text style={[styles.buttonText1]}>Muskelaufbau</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
